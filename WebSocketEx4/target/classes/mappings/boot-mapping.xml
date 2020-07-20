@@ -12,31 +12,38 @@
 		]]>
 	</update>
 	
+	<update id="selectCountBoot">
+		<![CDATA[
+			UPDATE MSGBOOT SET
+ 			butnum = #{Num}
+		]]>
+	</update>
+	
 	<update id="qaBoot0">
 		<![CDATA[
 			UPDATE MSGBOOT SET
- 			q0 = #{q}, a0 = #{a}, butNum = 1
+ 			q0 = #{q}, a0 = #{a}
 		]]>
 	</update>
 	
 	<update id="qaBoot1">
 		<![CDATA[
 			UPDATE MSGBOOT SET
- 			q1 = #{q}, a1 = #{a}, butNum = 2
+ 			q1 = #{q}, a1 = #{a}
 		]]>
 	</update>
 	
 	<update id="qaBoot2">
 		<![CDATA[
 			UPDATE MSGBOOT SET
- 			q2 = #{q}, a2 = #{a}, butNum = 3
+ 			q2 = #{q}, a2 = #{a}
 		]]>
 	</update>
 	
 	<update id="qaBoot3">
 		<![CDATA[
 			UPDATE MSGBOOT SET
- 			q3 = #{q}, a3 = #{a}, butNum = 4
+ 			q3 = #{q}, a3 = #{a}
 		]]>
 	</update>
 	

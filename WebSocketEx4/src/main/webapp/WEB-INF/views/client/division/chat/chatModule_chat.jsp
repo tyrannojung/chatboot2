@@ -96,7 +96,7 @@ if (session.getAttribute("userID") != null) {
 				style="position: absolute;">
 				<input id="chatContent" type="text" class="chat__write"
 					placeholder="Send message" class="chat__write-input"
-					style="margin-bottom: 90px; position: fixed; width: 310px; top: 800px;"
+					style="margin-bottom: 90px; position: fixed; width: 310px; top: 600px;"
 					onkeydown="return enter()" />
 			</div>
 		</div>
@@ -218,8 +218,6 @@ if (session.getAttribute("userID") != null) {
 		<script>
 	function submitboot(i){
 		
-		alert(i);
-
 		$('#chatList').append('<li class="incoming-message message">' + 
 				'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
   				'<div class="message__content">' +

@@ -17,6 +17,11 @@ public class BootServiceImpl implements BootService {
 		
 	}
 	
+	public void selectCountBoot(String selectNum) {
+		bootdao.selectCountBoot(selectNum);
+		
+	}
+	
 	public void qaBoot(String boot_question, String boot_answer, String boot_choice) {
 		bootdao.qaBoot(boot_question, boot_answer, boot_choice);
 	}

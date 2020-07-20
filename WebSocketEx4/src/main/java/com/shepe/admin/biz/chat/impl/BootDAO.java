@@ -18,6 +18,13 @@ public class BootDAO {
 
 		mybatis.update("Boot.startBoot", startBootContent);
 	}
+	
+	public void selectCountBoot(String selectNum) {
+		System.out.println(selectNum);
+		int Num = Integer.parseInt(selectNum);
+
+		mybatis.update("Boot.selectCountBoot", Num);
+	}	
 
 	public void qaBoot(String boot_question, String boot_answer, String boot_choice) {
 

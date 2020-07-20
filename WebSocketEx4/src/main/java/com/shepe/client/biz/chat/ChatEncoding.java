@@ -12,7 +12,7 @@ public class ChatEncoding {
 			str = str.replaceAll(">", "&gt");
 			str = str.replaceAll("\"", "&#34");
 			str = str.replaceAll("\'", "&#039");
-			str = str.replaceAll("\n", "<br>");
+			str = str.replaceAll("\r\n", "<br>");
 		}
 		catch (Exception e) {
 			e.printStackTrace();

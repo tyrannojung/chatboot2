@@ -116,10 +116,21 @@ public class ChatController {
 		bootservice.startBoot(startBootContent);
 	}
 	
+	@RequestMapping("/selectCountBoot")
+	public void selectCountBoot(@RequestParam String selectNum) throws IOException {
+		selectNum = URLDecoder.decode(selectNum, "UTF-8");
+		bootservice.selectCountBoot(selectNum);
+	}
+		
+	
 	@RequestMapping(value="/qaBoot",produces = "application/text; charset=utf8", method=RequestMethod.POST)
 	public void qaBoot(@RequestParam String boot_question, @RequestParam String boot_answer, @RequestParam String boot_choice) throws IOException {
 		
-
+		boot_question = chatencoding.encoding(boot_question);
+		boot_answer = chatencoding.encoding(boot_answer);
+		boot_choice = chatencoding.encoding(boot_choice);
+		
+		System.out.println(boot_question + "," + boot_answer + "," + boot_choice);
 		bootservice.qaBoot(boot_question, boot_answer, boot_choice);
 		
 		

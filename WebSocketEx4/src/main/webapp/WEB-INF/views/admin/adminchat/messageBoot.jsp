@@ -40,9 +40,9 @@ div.col-8 div {
 <script>
 function submitcheck(i){
 	var formsubmit = "#" + "bootsubject" + i;
-	alert(formsubmit)
+	
 	var formData = $(formsubmit).serialize();
-	alert(formData);
+	
         $.ajax({
             cache : false,
             url : "qaBoot",
@@ -186,6 +186,15 @@ function submitcheck(i){
 			$('#button2').click(function() {
 				var selctNum = $('#numberUpDown').text();
 				var selectNumP = parseInt(selctNum, 10);
+				
+				$.ajax({
+	  				type: "POST",
+	  				url: "selectCountBoot",
+	  				data: {
+	  					selectNum: encodeURIComponent(selctNum)
+	  				}
+				});
+				
 				
 				$('#section3').fadeIn(2000);
 				$('#bootWriteList').empty();
