@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Boot">
+
+
+	<update id="startBoot">
+		<![CDATA[
+			UPDATE MSGBOOT SET
+ 			sb = #{startBootContent}
+		]]>
+	</update>
+	
+	<update id="qaBoot0">
+		<![CDATA[
+			UPDATE MSGBOOT SET
+ 			q0 = #{q}, a0 = #{a}, butNum = 1
+		]]>
+	</update>
+	
+	<update id="qaBoot1">
+		<![CDATA[
+			UPDATE MSGBOOT SET
+ 			q1 = #{q}, a1 = #{a}, butNum = 2
+		]]>
+	</update>
+	
+	<update id="qaBoot2">
+		<![CDATA[
+			UPDATE MSGBOOT SET
+ 			q2 = #{q}, a2 = #{a}, butNum = 3
+		]]>
+	</update>
+	
+	<update id="qaBoot3">
+		<![CDATA[
+			UPDATE MSGBOOT SET
+ 			q3 = #{q}, a3 = #{a}, butNum = 4
+		]]>
+	</update>
+	
+	<select id="BootContent" resultType="boot">
+			SELECT * FROM MSGBOOT ;
+	</select>
+	
+</mapper>
+

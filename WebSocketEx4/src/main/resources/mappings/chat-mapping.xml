@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CommonChatDAO">
+
+	<select id="getChatListByID" resultType="chat">
+		<![CDATA[
+			SELECT * FROM CHAT WHERE ((fromID = #{fromID} AND toID = #{toID}) OR (fromID = #{fromIDr} AND toID = #{toIDr})) AND chatsq > #{chatSQ} ORDER BY chatTime
+		]]>
+	</select>
+	<select id="getChatListByRecent" resultType="chat">
+		<![CDATA[
+			SELECT * FROM CHAT WHERE ((fromID = #{fromID} AND toID =#{toID}) OR (fromID = #{fromIDr} AND toID =#{toIDr})) AND chatsq > (SELECT MAX(chatsq) - #{number} FROM CHAT WHERE (fromID =#{toIDrr} AND toID = #{fromIDrr}) OR (fromID = #{toIDrrr} AND toID = #{fromIDrrr})) ORDER BY chatTime
+		]]>
+	</select>
+	<select id="getBox" resultType="chat">
+		<![CDATA[
+			SELECT * FROM CHAT WHERE chatsq IN (SELECT MAX(chatsq) FROM CHAT WHERE toID = #{userID} OR fromID = #{userID} GROUP BY fromID, toID)
+		]]>
+	</select>
+	
+	<insert id="submit">
+		<![CDATA[
+			INSERT INTO CHAT VALUES (NULL, #{fromID}, #{toID}, #{chatContent}, NOW(), 0)
+		]]>
+	</insert>
+	
+	<update id="readChat">
+		<![CDATA[
+			UPDATE CHAT SET chatRead = 1 WHERE (fromID = #{fromID} AND toID = #{toID})
+		]]>
+	</update>
+	
+	<select id="getAllUnreadChat" resultType="int">
+		<![CDATA[
+			SELECT COUNT(chatsq) FROM CHAT WHERE toID = #{fromID} AND chatREAD = 0
+		]]>
+	</select>
+	
+	<select id="getUnreadChat" resultType="int">
+		<![CDATA[
+			SELECT COUNT(chatsq) FROM CHAT WHERE fromID = #{fromID} AND toID = #{toID} AND chatRead = 0
+		]]>
+	</select>
+	
+	
+	
+	
+</mapper>
+
