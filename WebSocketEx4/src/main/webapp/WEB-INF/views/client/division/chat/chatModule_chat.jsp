@@ -74,7 +74,9 @@ if (session.getAttribute("userID") != null) {
 							<span class="message__author">lady</span>
 						</div>
 				   </li>
-				   
+
+
+				   <div id="innerhtml">
 				   <li class="incoming-message message chatbootstart2"><img
 						src="/ex/resources/chatcss/hello.png"
 						class="m-avatar message__avatar" />
@@ -89,6 +91,8 @@ if (session.getAttribute("userID") != null) {
 							<span class="message__author">lady</span>
 						</div>	
 				   </li>
+				  </div>
+
 
 				</ul>
 			</main>
@@ -96,7 +100,7 @@ if (session.getAttribute("userID") != null) {
 				style="position: absolute;">
 				<input id="chatContent" type="text" class="chat__write"
 					placeholder="Send message" class="chat__write-input"
-					style="margin-bottom: 90px; position: fixed; width: 310px; top: 600px;"
+					style="margin-bottom: 90px; position: fixed; width: 310px; top: 800px;"
 					onkeydown="return enter()" />
 			</div>
 		</div>
@@ -124,20 +128,31 @@ if (session.getAttribute("userID") != null) {
 			$(".checkone").replaceWith(); // 채팅방을 누르는것만으로도 메세지가 가게끔한다.
 			
 			
-			messageTextArea.value += "(operator) => " + message.data + "\n";
-			
-			$('#chatList').append('<li class="incoming-message message">' + 
-					'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
-	  				'<div class="message__content">' +
-	  				'<span class="message__bubble" style="word-break:break-all;">' +
-	  				message.data +
-	  				'</span>' +
-	  				'<span class="message__author">lady</span>'+
-	  				'</div>' +
-	  				'<div class="media-body">' +
-	  				' </li>');
-			$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
-			
+			var onmessagedata = message.data;
+			var fromID = '<%=userID%>';
+	  		var toID = '<%=toID%>';
+	  		
+			$.ajax({
+				type : "POST",
+				url : "chatSubmit",
+				data : {
+					fromID : encodeURIComponent(toID),
+					toID : encodeURIComponent(fromID),
+					chatContent : encodeURIComponent(onmessagedata)
+				}
+			}).done(function() {
+				$('#chatList').append('<li class="incoming-message message">' + 
+						'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
+		  				'<div class="message__content">' +
+		  				'<span class="message__bubble" style="word-break:break-all;">' +
+		  				message.data +
+		  				'</span>' +
+		  				'<span class="message__author">lady</span>'+
+		  				'</div>' +
+		  				'<div class="media-body">' +
+		  				' </li>');
+				$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
+			});
 		};
 		
 		// 서버로 메시지를 발송하는 함수
@@ -226,10 +241,30 @@ if (session.getAttribute("userID") != null) {
   				'</span>' +
   				'<span class="message__author">lady</span>'+
   				'</div>' +
-  				'<div class="media-body">' +
-  				' </li>');
+  				' </li>' +
+  				'<li class="incoming-message message">' + 
+				'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
+  				'<div class="message__content">' +
+  				'<span class="message__bubble" style="word-break:break-all;">' +
+  				'<button type="button" class="btn btn-secondary" onclick="replayboot()">메뉴</button><button type="button" class="btn btn-secondary" onclick="adminchat()">상담원연결</button>'+
+  				'</span>' +
+  				'<span class="message__author">lady</span>'+
+  				'</div>' +
+  				' </li>'		
+		);
+
 		$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
 		
+	}
+	
+	function replayboot(){
+		var el = $("#innerhtml").html();
+		$('#chatList').append(el);
+		$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
+	}
+	
+	function adminchat(){
+		webSocket.send("AdminCallPlease입니다.");
 	}
 </script>
 

@@ -70,8 +70,16 @@ public class Admin {
 
 // 일반 유저가 메시지를 보낼 때, 운영자 유저에게 알리는 함수
 	public static void sendMessage(String key, String message) {
-// json 구조로 status는 message이고 key는 유저 키 정보이다.(javascript와 맞추는 프로토콜) message는 보내는 메시지이다.
-		send("{\"status\":\"message\", \"key\":\"" + key + "\", \"message\":\"" + message + "\"}");
+			System.out.println(message);
+		if(message.equals("AdminCallPlease입니다.")) {
+
+			send("{\"status\":\"AdminCall\", \"key\":\"" + key + "\", \"message\":\"" + message + "\"}");
+			
+		} else {
+			
+			// json 구조로 status는 message이고 key는 유저 키 정보이다.(javascript와 맞추는 프로토콜) message는 보내는 메시지이다.
+			send("{\"status\":\"message\", \"key\":\"" + key + "\", \"message\":\"" + message + "\"}");
+		}
 	}
 
 // 일반 유저가 접속을 끊을 때, 운영자 유저에게 알리는 함수

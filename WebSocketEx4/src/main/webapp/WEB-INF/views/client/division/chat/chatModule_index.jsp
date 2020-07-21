@@ -57,7 +57,7 @@
     <nav class="nav" style="display: inline-block; margin-top: 350px;">
       <ul class="nav__list">
         <li class="nav__list-item">
-          <a href="friends.html" class="nav__list-link">
+          <a href='javascript:void(0);' class="nav__list-link" onclick="함수();">
             <i class="far fa-user"></i
           ></a>
         </li>
@@ -67,12 +67,12 @@
           </a>
         </li>
         <li class="nav__list-item">
-          <a href="find.html" class="nav__list-link">
+          <a href="#" class="nav__list-link">
             <i class="fas fa-search"></i>
           </a>
         </li>
         <li class="nav__list-item">
-          <a href="more.html" class="nav__list-link">
+          <a href="#" class="nav__list-link">
             <i class="fas fa-ellipsis-h"></i>
           </a>
         </li>

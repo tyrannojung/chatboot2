@@ -189,7 +189,7 @@ public class ChatController {
 	@ResponseBody
 	@RequestMapping(value="/chatSubmit",produces = "application/text; charset=utf8", method=RequestMethod.POST)
 	public void chatSubmit(@RequestParam String fromID, @RequestParam String toID, @RequestParam String chatContent) throws IOException {
-
+		System.out.println("여기도안타나?");
 		fromID = URLDecoder.decode(fromID, "UTF-8");
 		toID = URLDecoder.decode(toID, "UTF-8");
 		chatContent = URLDecoder.decode(chatContent, "UTF-8");

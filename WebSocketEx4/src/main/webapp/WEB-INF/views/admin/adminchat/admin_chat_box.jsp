@@ -109,7 +109,7 @@ var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
 		let node = JSON.parse(message.data);
 		// 메시지의 status는 유저의 접속 형태이다.
 		// visit은 유저가 접속했을 때 알리는 메시지다.
-		if (node.status === "visit") {
+		if (node.status === "AdminCall") {
 			
 			$('#boxTable').append("<tr onclick=" + 
 					 "\"location.href='adminex'\""+
