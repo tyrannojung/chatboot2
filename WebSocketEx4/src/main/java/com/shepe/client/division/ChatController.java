@@ -102,7 +102,6 @@ public class ChatController {
 			request.setAttribute("usercheck", "idpwno");
 			return "/client/join/login";
 		}
-		
 	}
 	
 	@RequestMapping("/messageBoot")
@@ -138,38 +137,45 @@ public class ChatController {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@RequestMapping("/chatex")
-	public String chatex() {
-		return "/client/division/chat/chat";
-	}
-
-	@RequestMapping("/adminex")
-	public String adminex() {
-		return "/admin/adminchat/admin";
-	}
-
-	
 	@RequestMapping("/chat")
-	public String chat() {
+	public String chat(HttpServletRequest request) {
 		
+		HttpSession session = request.getSession();
+		String userID = (String) session.getAttribute("userID");
+		int a = chatService.chatListNum(userID);
+		session.setAttribute("consultNum", a);
+
 		return "/client/division/chat/chatModule_chat";
 	}
+	
+	
+	
 	
 	@RequestMapping("/chatindex")
 	public String chatindex() {
 
 		return "/client/division/chat/chatModule_index";
 	}
+	
+	@RequestMapping("/chatlist")
+	public String chatlist() {
+
+		return "/client/division/chat/chatModule_chatbox";
+	}
+	
+	@RequestMapping("/adminex")
+	public String adminex() {
+
+		return "/admin/adminchat/admin";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@RequestMapping(value="/chatList",produces = "application/text; charset=utf8", method=RequestMethod.POST)
 	@ResponseBody
@@ -188,12 +194,12 @@ public class ChatController {
 	
 	@ResponseBody
 	@RequestMapping(value="/chatSubmit",produces = "application/text; charset=utf8", method=RequestMethod.POST)
-	public void chatSubmit(@RequestParam String fromID, @RequestParam String toID, @RequestParam String chatContent) throws IOException {
+	public void chatSubmit(@RequestParam String fromID, @RequestParam String toID, @RequestParam String chatContent, @RequestParam int chatRoomNum) throws IOException {
 		System.out.println("여기도안타나?");
 		fromID = URLDecoder.decode(fromID, "UTF-8");
 		toID = URLDecoder.decode(toID, "UTF-8");
 		chatContent = URLDecoder.decode(chatContent, "UTF-8");
-		chatService.submit(fromID, toID, chatContent);	
+		chatService.submit(fromID, toID, chatContent,chatRoomNum);	
 
 	}
 	

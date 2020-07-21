@@ -22,7 +22,7 @@
 	
 	<insert id="submit">
 		<![CDATA[
-			INSERT INTO CHAT VALUES (NULL, #{fromID}, #{toID}, #{chatContent}, NOW(), 0, 0)
+			INSERT INTO CHAT VALUES (NULL, #{fromID}, #{toID}, #{chatContent}, NOW(), 0, #{chatRoomNum})
 		]]>
 	</insert>
 	
@@ -44,7 +44,11 @@
 		]]>
 	</select>
 	
-	
+	<select id="chatListNum" resultType="int">
+		<![CDATA[
+			SELECT IFNULL(MAX(CHATROOMNUM),0) FROM CHAT WHERE FROMID = #{userID}
+		]]>
+	</select>
 	
 	
 </mapper>

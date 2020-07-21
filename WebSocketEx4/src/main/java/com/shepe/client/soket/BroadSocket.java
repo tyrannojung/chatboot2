@@ -17,7 +17,7 @@ import javax.websocket.server.ServerEndpoint;
 public class BroadSocket {
 
 	private static Map<String, Session> clientMap = Collections.synchronizedMap(new HashMap<String, Session>());
-	
+
 	public <K, V> K getKey(Map<K, V> map, V value) {
 		 
         for (K key : map.keySet()) {

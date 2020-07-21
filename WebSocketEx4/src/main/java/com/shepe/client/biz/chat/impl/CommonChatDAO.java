@@ -70,13 +70,14 @@ public class CommonChatDAO {
 		} 
 		
 		
-		public void submit(String fromID, String toID, String chatContent) {
+		public void submit(String fromID, String toID, String chatContent, int chatRoomNum) {
 
 			
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("fromID", fromID);
 			map.put("toID", toID);
 			map.put("chatContent", chatContent);
+			map.put("chatRoomNum", chatRoomNum);
 			mybatis.insert("CommonChatDAO.submit", map);
 		} 
 		
@@ -104,4 +105,13 @@ public class CommonChatDAO {
 			return mybatis.selectOne("CommonChatDAO.getUnreadChat", map);
 
 		}	
+		
+		
+		public int chatListNum(String userID) {
+			return mybatis.selectOne("CommonChatDAO.chatListNum", userID);
+		}
+		
+		
+		
+		
 	}

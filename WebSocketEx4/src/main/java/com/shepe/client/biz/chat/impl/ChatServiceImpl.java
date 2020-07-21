@@ -24,8 +24,8 @@ public class ChatServiceImpl implements ChatService {
 	public List<CommonChatDTO> getBox(String userID) {
 		return commonChatDAO.getBox(userID);
 	}
-	public void submit(String fromID, String toID, String chatContent) {
-		commonChatDAO.submit(fromID, toID, chatContent);
+	public void submit(String fromID, String toID, String chatContent, int chatRoomNum) {
+		commonChatDAO.submit(fromID, toID, chatContent, chatRoomNum);
 	}
 	public void readChat(String fromID, String toID) {
 		commonChatDAO.readChat(fromID, toID);
@@ -36,6 +36,9 @@ public class ChatServiceImpl implements ChatService {
 	public int getUnreadChat(String fromID, String toID) {
 		return commonChatDAO.getUnreadChat(fromID, toID);
 	}
-
+	
+	public int chatListNum(String userID) {
+		return commonChatDAO.chatListNum(userID);
+	}
 
 }

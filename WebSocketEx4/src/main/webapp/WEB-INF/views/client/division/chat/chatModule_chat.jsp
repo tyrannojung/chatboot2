@@ -10,6 +10,8 @@ if (session.getAttribute("userID") != null) {
 	userID = (String) session.getAttribute("userID");
 }
 
+int consultNum = (int)(session.getAttribute("consultNum")) + 1;
+
 	String toID = "admin";
 
 %>
@@ -85,7 +87,7 @@ if (session.getAttribute("userID") != null) {
 							<c:forEach var="i" begin="0" end="${BootContent.butNum - 1}"> 
 								<c:set var="fname1" value="q${i}" />
 								<c:set var="fname2" value="a${i}" />
-								<button id="a${i}" type="button" class="btn btn-secondary mg-bt10" onclick="submitboot('${BootContent[fname2]}');">${BootContent[fname1]}</button>
+								<button id="a${i}" type="button" class="btn btn-secondary mg-bt10" onclick="submitboot('${BootContent[fname2]}','${BootContent[fname1]}');">${BootContent[fname1]}</button>
 							</c:forEach>
 							</span>
 							<span class="message__author">lady</span>
@@ -100,7 +102,7 @@ if (session.getAttribute("userID") != null) {
 				style="position: absolute;">
 				<input id="chatContent" type="text" class="chat__write"
 					placeholder="Send message" class="chat__write-input"
-					style="margin-bottom: 90px; position: fixed; width: 310px; top: 800px;"
+					style="margin-bottom: 90px; position: fixed; width: 310px; top: 780px;"
 					onkeydown="return enter()" />
 			</div>
 		</div>
@@ -131,6 +133,7 @@ if (session.getAttribute("userID") != null) {
 			var onmessagedata = message.data;
 			var fromID = '<%=userID%>';
 	  		var toID = '<%=toID%>';
+	  		var chatRoomNum ='<%=consultNum%>';
 	  		
 			$.ajax({
 				type : "POST",
@@ -138,7 +141,8 @@ if (session.getAttribute("userID") != null) {
 				data : {
 					fromID : encodeURIComponent(toID),
 					toID : encodeURIComponent(fromID),
-					chatContent : encodeURIComponent(onmessagedata)
+					chatContent : encodeURIComponent(onmessagedata),
+					chatRoomNum : chatRoomNum
 				}
 			}).done(function() {
 				$('#chatList').append('<li class="incoming-message message">' + 
@@ -178,6 +182,9 @@ if (session.getAttribute("userID") != null) {
 			var fromID = '<%=userID%>';
 	  		var toID = '<%=toID%>';
 			var chatContent = message.value;
+			var chatRoomNum ='<%=consultNum%>';
+			
+			
 			message.value = ""; // 텍스트 박스 초기화
 			
 				var changetext = '<span class="text-warning checkone" style="margin-top: 20px;">1</span>';
@@ -187,7 +194,8 @@ if (session.getAttribute("userID") != null) {
 					data : {
 						fromID : encodeURIComponent(fromID),
 						toID : encodeURIComponent(toID),
-						chatContent : encodeURIComponent(chatContent)
+						chatContent : encodeURIComponent(chatContent),
+						chatRoomNum : chatRoomNum
 					}
 				}).done(function() {
 					setTimeout(function() {
@@ -226,35 +234,69 @@ if (session.getAttribute("userID") != null) {
 				    $(this).css('visibility', 'visible'); 
 				    next(); 
 				  });
-				
+				var consultNum = '<%=consultNum%>';
 				
 			});
 		</script>
 		<script>
-	function submitboot(i){
+	function submitboot(i,q){
 		
-		$('#chatList').append('<li class="incoming-message message">' + 
-				'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
-  				'<div class="message__content">' +
-  				'<span class="message__bubble" style="word-break:break-all;">' +
-  				i +
-  				'</span>' +
-  				'<span class="message__author">lady</span>'+
-  				'</div>' +
-  				' </li>' +
-  				'<li class="incoming-message message">' + 
-				'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
-  				'<div class="message__content">' +
-  				'<span class="message__bubble" style="word-break:break-all;">' +
-  				'<button type="button" class="btn btn-secondary" onclick="replayboot()">메뉴</button><button type="button" class="btn btn-secondary" onclick="adminchat()">상담원연결</button>'+
-  				'</span>' +
-  				'<span class="message__author">lady</span>'+
-  				'</div>' +
-  				' </li>'		
-		);
-
-		$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
+		var onmessagedata = i;
+		var sendmessagedata = q;
+		var fromID = '<%=toID%>';
+  		var toID = '<%=userID%>';
+  		var chatRoomNum ='<%=consultNum%>';
 		
+		
+		$.ajax({
+			type : "POST",
+			url : "chatSubmit",
+			data : {
+				fromID : encodeURIComponent(toID),
+				toID : encodeURIComponent(fromID),
+				chatContent : encodeURIComponent(sendmessagedata),
+				chatRoomNum : chatRoomNum
+			}
+		}).done(function() {
+			$('#chatList').append('<li class="sent-message message">' +
+	  				'<div class="message__content">' +
+	  				'<span class="message__bubble" style="word-break:break-all;">' +
+	  				q +
+	  				'</span>' +
+	  				'</div>' +
+	  				' </li>');
+			$.ajax({
+				type : "POST",
+				url : "chatSubmit",
+				data : {
+					fromID : encodeURIComponent(fromID),
+					toID : encodeURIComponent(toID),
+					chatContent : encodeURIComponent(onmessagedata),
+					chatRoomNum : chatRoomNum
+				}
+			}).done(function() {
+				$('#chatList').append('<li class="incoming-message message">' + 
+						'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
+		  				'<div class="message__content">' +
+		  				'<span class="message__bubble" style="word-break:break-all;">' +
+		  				i +
+		  				'</span>' +
+		  				'<span class="message__author">lady</span>'+
+		  				'</div>' +
+		  				' </li>' +
+		  				'<li class="incoming-message message">' + 
+						'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
+		  				'<div class="message__content">' +
+		  				'<span class="message__bubble" style="word-break:break-all;">' +
+		  				'<button type="button" class="btn btn-secondary" onclick="replayboot()">메뉴</button><button type="button" class="btn btn-secondary" onclick="adminchat()">상담원연결</button>'+
+		  				'</span>' +
+		  				'<span class="message__author">lady</span>'+
+		  				'</div>' +
+		  				' </li>'		
+				);
+				$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
+			});
+		});
 	}
 	
 	function replayboot(){

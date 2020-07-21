@@ -15,7 +15,7 @@
 </head>
 <body>
      <div class="container">
-     <aside style="float:right; position: fixed; right: 5px; bottom: 130px; z-index: 1;  ">
+     <aside style="float:right; position: fixed; right: 5px; bottom: 95px; top: 280px; z-index: 1;  ">
 	    <div id ="changechat">
 	 		 
 <div id ="change">
@@ -57,22 +57,22 @@
     <nav class="nav" style="display: inline-block; margin-top: 350px;">
       <ul class="nav__list">
         <li class="nav__list-item">
-          <a href='javascript:void(0);' class="nav__list-link" onclick="함수();">
+          <a href='javascript:void(0);' class="nav__list-link" onclick="buttonchatList_click()">
             <i class="far fa-user"></i
           ></a>
         </li>
         <li class="nav__list-item">
-          <a href="index.html" class="nav__list-link">
+          <a href='javascript:void(0);' class="nav__list-link">
             <i class="fas fa-comment"></i>
           </a>
         </li>
         <li class="nav__list-item">
-          <a href="#" class="nav__list-link">
+        <a href='javascript:void(0);' class="nav__list-link" onclick="함수();">
             <i class="fas fa-search"></i>
           </a>
         </li>
         <li class="nav__list-item">
-          <a href="#" class="nav__list-link">
+          <a href='javascript:void(0);' class="nav__list-link" onclick="함수();">
             <i class="fas fa-ellipsis-h"></i>
           </a>
         </li>
@@ -108,6 +108,16 @@
 
 			$.ajax({
 		  	    url: "chatindex",
+		  	  	cache: false
+		   }).done(function (fragment) {
+		         $("#change").replaceWith(fragment);
+		    });
+		}
+		
+		function buttonchatList_click() {
+
+			$.ajax({
+		  	    url: "chatlist",
 		  	  	cache: false
 		   }).done(function (fragment) {
 		         $("#change").replaceWith(fragment);
