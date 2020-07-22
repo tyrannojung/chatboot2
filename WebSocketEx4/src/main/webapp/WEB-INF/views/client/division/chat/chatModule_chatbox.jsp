@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,12 +22,9 @@
 	<div class="header-wrapper" style="position: absolute;">
 				<header class="header" style="margin-bottom: 0px;">
 					<div class="header__header-column">
-						<div class="header__back-btn" onclick="buttonback_click()">
-							<i class="fas fa-arrow-left"></i>
-						</div>
+						<div class="header__header-column">
+						<h1 class="header__title">Consult Box</h1>
 					</div>
-					<div class="header__header-column">
-						<h1 class="header__title">Lady bug</h1>
 					</div>
 					<div class="header__header-column">
 						<span class="header__icon"> <i class="fas fa-cog"></i>
@@ -40,24 +41,37 @@
         <li class="chat__timestamp">&nbsp;</li>
         <li class="chat__timestamp">&nbsp;</li>
         
+        
         <div>
-        <li class="friends__friend friend friend--lg">
-          <div class="friend__column">
-            <a href="chat.html">
-              <img src="/ex/resources/chatcss/consultbox.png" class="friend__avatar"/></a>
-            <div class="friend__content">
-              <span class="friend__name"> 상담종료 </span>
-              <span class="friend__status">
-                	결제/환불
-              </span>
-            </div>
-          </div>
-          <div class="friend__column">
-              <span style="font-size: 12px;">
-                	2017.01.01
-              </span>
-          </div>
-        </li>
+        <c:forEach var="item" items="${ChatRoomList}"> 
+			<li class="friends__friend friend friend--lg">
+	          <div class="friend__column">
+	            <a href="chat.html">
+	              <img src="/ex/resources/chatcss/consultbox.png" class="friend__avatar"/></a>
+	            <div class="friend__content">
+	              <span class="friend__name">
+	              <c:set var="complete" value="${item.chatcomplete}"/>
+		            <c:choose>
+					    <c:when test="${complete eq '0'}">
+					        <c:out value="상담진행중"/>
+					    </c:when>
+					    <c:otherwise>
+					      	<c:out value="상담완료"/>
+					    </c:otherwise>
+					</c:choose>
+	              </span>
+	              <span class="friend__status">
+	                	<c:out value="${item.chatsubject}"/>
+	              </span>
+	            </div>
+	          </div>
+	          <div class="friend__column">
+	              <span style="font-size: 12px;">
+	                	<c:out value="${item.chatdate}"/>
+	              </span>
+	          </div>
+	        </li>
+		</c:forEach>
         </div>
         
       </ul>
@@ -67,7 +81,7 @@
 <nav class="nav" style="display: inline-block; position: absolute;">
       <ul class="nav__list">
         <li class="nav__list-item">
-          <a href='javascript:void(0);' class="nav__list-link" onclick="buttonchatList_click()">
+          <a href='javascript:void(0);' class="nav__list-link">
             <i class="fas fa-user"></i
           ></a>
         </li>

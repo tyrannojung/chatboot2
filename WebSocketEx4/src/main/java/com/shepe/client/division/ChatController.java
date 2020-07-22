@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.shepe.admin.biz.chat.BootService;
 import com.shepe.admin.biz.chat.BootVO;
 import com.shepe.client.biz.chat.ChatEncoding;
+import com.shepe.client.biz.chat.ChatRoomVO;
 import com.shepe.client.biz.chat.ChatService;
 import com.shepe.client.biz.chat.CommonChatDTO;
 import com.shepe.client.join.JoinDAO;
@@ -86,6 +86,7 @@ public class ChatController {
 		joindao.join(vo);
 		return "redirect:/index";
 	}
+	
 	@RequestMapping("/userLoginAction")
 	public String userLoginAction(JoinVO vo, HttpServletRequest request) {
 		
@@ -144,7 +145,6 @@ public class ChatController {
 		String userID = (String) session.getAttribute("userID");
 		int a = chatService.chatListNum(userID);
 		session.setAttribute("consultNum", a);
-
 		return "/client/division/chat/chatModule_chat";
 	}
 	
@@ -152,16 +152,28 @@ public class ChatController {
 	
 	
 	@RequestMapping("/chatindex")
-	public String chatindex() {
-
+	public String chatindex(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		session.removeAttribute("consultNum");
 		return "/client/division/chat/chatModule_index";
 	}
 	
 	@RequestMapping("/chatlist")
-	public String chatlist() {
+	public String chatlist(HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		String userID = (String) session.getAttribute("userID");
+		List<ChatRoomVO> vo = chatService.chatroomlist(userID);
+		session.setAttribute("ChatRoomList", vo);
 
 		return "/client/division/chat/chatModule_chatbox";
 	}
+	
+	
+	
+	
+	
+	
 	
 	@RequestMapping("/adminex")
 	public String adminex() {
@@ -169,13 +181,15 @@ public class ChatController {
 		return "/admin/adminchat/admin";
 	}
 	
-	
-	
-	
-	
-	
-	
-	
+	@RequestMapping(value="/chatRoomSetting", produces = "application/text; charset=utf8", method=RequestMethod.POST)
+	@ResponseBody
+	public void chatRoomSetting(@RequestParam String fromID, @RequestParam int chatRoomNum, @RequestParam String chatRoomSubject) throws IOException {
+		
+		chatRoomSubject = URLDecoder.decode(chatRoomSubject, "UTF-8");
+		fromID = URLDecoder.decode(fromID, "UTF-8");
+		chatService.chatRoomSetting(fromID,chatRoomNum,chatRoomSubject);
+		
+	}
 	
 	@RequestMapping(value="/chatList",produces = "application/text; charset=utf8", method=RequestMethod.POST)
 	@ResponseBody
@@ -195,7 +209,7 @@ public class ChatController {
 	@ResponseBody
 	@RequestMapping(value="/chatSubmit",produces = "application/text; charset=utf8", method=RequestMethod.POST)
 	public void chatSubmit(@RequestParam String fromID, @RequestParam String toID, @RequestParam String chatContent, @RequestParam int chatRoomNum) throws IOException {
-		System.out.println("여기도안타나?");
+		
 		fromID = URLDecoder.decode(fromID, "UTF-8");
 		toID = URLDecoder.decode(toID, "UTF-8");
 		chatContent = URLDecoder.decode(chatContent, "UTF-8");

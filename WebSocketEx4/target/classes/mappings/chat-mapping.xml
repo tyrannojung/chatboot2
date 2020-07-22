@@ -50,6 +50,17 @@
 		]]>
 	</select>
 	
+	<insert id="chatRoomSetting">
+		<![CDATA[
+			INSERT INTO CHATROOM VALUES (#{fromID}, #{chatRoomNum}, 0, #{chatRoomSubject}, sysdate())
+		]]>
+	</insert>
+	
+	<select id="chatroomlist" resultType="chatlist">
+		<![CDATA[
+			SELECT * FROM CHATROOM WHERE USERID=#{userID};
+		]]>
+	</select>
 	
 </mapper>
 

@@ -10,6 +10,7 @@
  	<typeAliases>
  		<typeAlias alias="chat" type="com.shepe.client.biz.chat.CommonChatDTO" />
  		<typeAlias alias="boot" type="com.shepe.admin.biz.chat.BootVO" />
+ 		<typeAlias alias="chatlist" type="com.shepe.client.biz.chat.ChatRoomVO" />
  	</typeAliases>
 
 

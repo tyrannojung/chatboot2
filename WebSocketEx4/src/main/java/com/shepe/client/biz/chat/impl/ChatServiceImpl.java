@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.shepe.client.biz.chat.ChatRoomVO;
 import com.shepe.client.biz.chat.ChatService;
 import com.shepe.client.biz.chat.CommonChatDTO;
 
@@ -39,6 +40,14 @@ public class ChatServiceImpl implements ChatService {
 	
 	public int chatListNum(String userID) {
 		return commonChatDAO.chatListNum(userID);
+	}
+	
+	public void chatRoomSetting(String fromID, int chatRoomNum, String chatRoomSubject) {
+		commonChatDAO.chatRoomSetting(fromID,chatRoomNum,chatRoomSubject);
+	}
+	
+	public List<ChatRoomVO> chatroomlist(String userID) {
+		return commonChatDAO.chatroomlist(userID);
 	}
 
 }

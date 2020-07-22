@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.shepe.client.biz.chat.ChatRoomVO;
 import com.shepe.client.biz.chat.CommonChatDTO;
 
 @Repository
@@ -111,7 +112,16 @@ public class CommonChatDAO {
 			return mybatis.selectOne("CommonChatDAO.chatListNum", userID);
 		}
 		
+		public void chatRoomSetting(String fromID, int chatRoomNum, String chatRoomSubject) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("fromID", fromID);
+			map.put("chatRoomNum", chatRoomNum);
+			map.put("chatRoomSubject", chatRoomSubject);
+			mybatis.update("CommonChatDAO.chatRoomSetting", map);
+		}
 		
-		
+		public List<ChatRoomVO> chatroomlist(String userID) {
+			return mybatis.selectList("CommonChatDAO.chatroomlist", userID);
+		}
 		
 	}
