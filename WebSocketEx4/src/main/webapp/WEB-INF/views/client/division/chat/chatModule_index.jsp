@@ -104,16 +104,6 @@
 		    });
 		}
 		
-		function buttonback_click() {
-
-			$.ajax({
-		  	    url: "chatindex",
-		  	  	cache: false
-		   }).done(function (fragment) {
-		         $("#change").replaceWith(fragment);
-		    });
-		}
-		
 		function buttonchatList_click() {
 
 			$.ajax({

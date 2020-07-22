@@ -154,7 +154,13 @@ public class ChatController {
 	@RequestMapping("/chatindex")
 	public String chatindex(HttpServletRequest request) {
 		HttpSession session = request.getSession();
+		String userID= (String)session.getAttribute("userID");
+		int a = chatService.chatListNum(userID);
+		
+		session.setAttribute("consultRoomNum", a);
+		
 		session.removeAttribute("consultNum");
+		
 		return "/client/division/chat/chatModule_index";
 	}
 	
@@ -169,7 +175,11 @@ public class ChatController {
 		return "/client/division/chat/chatModule_chatbox";
 	}
 	
-	
+	@RequestMapping("/chatroomlistpage")
+	public String chatroomlistpage() {
+
+		return "/client/division/chat/chatModule_chatroom";
+	}
 	
 	
 	

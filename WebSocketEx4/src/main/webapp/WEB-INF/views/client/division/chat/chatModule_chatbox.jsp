@@ -4,6 +4,17 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%
+	String userID = null;
+if (session.getAttribute("userID") != null) {
+	userID = (String) session.getAttribute("userID");
+}
+
+int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
+
+	String toID = "admin";
+
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,40 +55,43 @@
         
         <div>
         <c:forEach var="item" items="${ChatRoomList}"> 
-			<li class="friends__friend friend friend--lg">
-	          <div class="friend__column">
-	            <a href="chat.html">
-	              <img src="/ex/resources/chatcss/consultbox.png" class="friend__avatar"/></a>
-	            <div class="friend__content">
-	              <span class="friend__name">
-	              <c:set var="complete" value="${item.chatcomplete}"/>
-		            <c:choose>
-					    <c:when test="${complete eq '0'}">
-					        <c:out value="상담진행중"/>
-					    </c:when>
-					    <c:otherwise>
-					      	<c:out value="상담완료"/>
-					    </c:otherwise>
-					</c:choose>
-	              </span>
-	              <span class="friend__status">
-	                	<c:out value="${item.chatsubject}"/>
-	              </span>
-	            </div>
-	          </div>
-	          <div class="friend__column">
-	              <span style="font-size: 12px;">
-	                	<c:out value="${item.chatdate}"/>
-	              </span>
-	          </div>
-	        </li>
+			<a href='javascript:void(0);' class="nav__list-link" onclick="button_chatroom()">
+				<li class="friends__friend friend friend--lg">
+		          <div class="friend__column">
+		              <img src="/ex/resources/chatcss/consultbox.png" class="friend__avatar"/>
+		            <div class="friend__content">
+		              <span class="friend__name">
+		              <c:set var="complete" value="${item.chatcomplete}"/>
+			            <c:choose>
+						    <c:when test="${complete eq '0'}">
+						        <c:out value="상담진행중"/>
+						    </c:when>
+						    <c:otherwise>
+						      	<c:out value="상담완료"/>
+						    </c:otherwise>
+						</c:choose>
+		              </span>
+		              <span class="friend__status">
+		                	<c:out value="${item.chatsubject}"/>
+		              </span>
+		            </div>
+		          </div>
+		          <div class="friend__column">
+		              <span style="font-size: 12px;">
+		                	<c:out value="${item.chatdate}"/>
+		              </span>
+		          </div>
+		        </li>
+	        </a>
 		</c:forEach>
         </div>
+        
+        
+        
         
       </ul>
       </main>
      </div>
-</div>
 <nav class="nav" style="display: inline-block; position: absolute;">
       <ul class="nav__list">
         <li class="nav__list-item">
@@ -86,7 +100,7 @@
           ></a>
         </li>
         <li class="nav__list-item">
-          <a href='javascript:void(0);' class="nav__list-link" onclick="buttonback_click()">
+          <a href='javascript:void(0);' class="nav__list-link" onclick="buttonback_click1()">
             <i class="far fa-comment"></i>
           </a>
         </li>
@@ -102,6 +116,53 @@
         </li>
       </ul>
 </nav>
+
+<script>
+		function buttonchatList_click() {
+			
+			var fromID = '<%=userID%>';
+	  		var toID = '<%=toID%>';
+	  		var chatRoomNum ='<%=consultNum%>';
+			
+			$.ajax({
+		  	    url: "chatList",
+		  	  data : {
+					fromID : encodeURIComponent(fromID),
+					toID : encodeURIComponent(toID),
+					chatRoomNum : chatRoomNum
+				}
+		   }).done(function (fragment) {
+		         $("#change").replaceWith(fragment);
+		    });
+		}
+		
+		
+		function buttonback_click1() {
+
+			$.ajax({
+		  	    url: "chatindex",
+		  	  	cache: false
+		   }).done(function (fragment) {
+		         $("#change").replaceWith(fragment);
+		    });
+		}
+		
+		function button_chatroom() {
+
+			$.ajax({
+		  	    url: "chatroomlistpage",
+		  	  	cache: false
+		   }).done(function (fragment) {
+		         $("#change").replaceWith(fragment);
+		    });
+		}
+		
+		
+</script>
+
+
+
+</div>
  
 </body>
 </html>

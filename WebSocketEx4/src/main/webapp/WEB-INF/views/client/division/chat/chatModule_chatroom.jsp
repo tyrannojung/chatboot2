@@ -10,7 +10,7 @@ if (session.getAttribute("userID") != null) {
 	userID = (String) session.getAttribute("userID");
 }
 
-int consultNum = (int)(session.getAttribute("consultNum")) + 1;
+int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 
 	String toID = "admin";
 
@@ -68,32 +68,7 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 					<span class="chat__timestamp">Monday, December 30, 2019</span>
 
 
-					<li class="incoming-message message chatbootstart1"><img
-						src="/ex/resources/chatcss/hello.png"
-						class="m-avatar message__avatar" />
-						<div class="message__content">
-							<span class="message__bubble" style="word-break: break-all;">${BootContent.sb}</span>
-							<span class="message__author">lady</span>
-						</div>
-				   </li>
 
-
-				   <div id="innerhtml">
-				   <li class="incoming-message message chatbootstart2"><img
-						src="/ex/resources/chatcss/hello.png"
-						class="m-avatar message__avatar" />
-						<div class="message__content">
-							<span class="message__bubble" style="word-break: break-all;">
-							<c:forEach var="i" begin="0" end="${BootContent.butNum - 1}"> 
-								<c:set var="fname1" value="q${i}" />
-								<c:set var="fname2" value="a${i}" />
-								<button id="a${i}" type="button" class="btn btn-secondary mg-bt10" onclick="submitboot('${BootContent[fname2]}','${BootContent[fname1]}');">${BootContent[fname1]}</button>
-							</c:forEach>
-							</span>
-							<span class="message__author">lady</span>
-						</div>	
-				   </li>
-				  </div>
 
 
 				</ul>
@@ -108,23 +83,7 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 		</div>
 
 
-		<script type="text/javascript">
-		var messageTextArea = document.getElementById("messageTextArea");
-
-		webSocket.onerror = function(message) {
-			
-			messageTextArea.value += "error...\n";
-
-			$('#chatList').append('<li class="incoming-message message">' + 
-	  				'<div class="message__content">' +
-	  				'<span class="message__bubble">' +
-	  				'error...' +
-	  				'</span>' +
-	  				'</div>' +
-	  				'<div class="media-body">' +
-	  				' </li>');
-		};
-		
+		<script type="text/javascript">		
 		webSocket.onmessage = function(message) {
 			
 			$(".checkone").replaceWith(); // 채팅방을 누르는것만으로도 메세지가 가게끔한다.
@@ -158,6 +117,55 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 				$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
 			});
 		};
+	  	
+	function chatListFunction(type) {
+  		var fromID = '<%=userID %>';
+  		var toID = '<%= toID %>';
+  		$.ajax({
+  			type: "POST",
+  			url: "chatList",
+  			data: {
+  				fromID: encodeURIComponent(fromID),
+  				toID: encodeURIComponent(toID),
+  				listType: type
+  			},
+  			success: function(data) {
+         
+  				var parsed = JSON.parse(data);
+  				var result = parsed.result;
+  				for(var i = 0; i < result.length; i++) {
+  					if(result[i][0].value == fromID) {
+  						result[i][0].value ='나';
+  					}
+  					addChat(result[i][0].value, result[i][2].value, result[i][3].value);
+  				}
+  				lastID = Number(parsed.last);
+  				
+  			}
+  		});
+  	}
+  	function addChat(chatName, chatContent, chatTime) {
+  		$('#chatList').append('<li class="incoming-message message">' + 
+  				'<div class="message__content">' +
+  				'<span class="message__bubble">' +
+  				chatContent +
+  				'</span>' +
+  				'<span class="message__author">'+
+  				chatName +
+  				'</span>' +
+  				'</div>' +
+  				'<div class="media-body">' +
+  				' </li>');
+  		$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
+  	}  	
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		// 서버로 메시지를 발송하는 함수
 		// Send 버튼을 누르거나 텍스트 박스에서 엔터를 치면 실행
@@ -218,143 +226,13 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 				}
 				return true;
 			}
-
-			$(document).ready(function() {
-				
-				$('.chatbootstart1')
-				  .delay(700)
-				  .queue(function (next) { 
-				    $(this).css('visibility', 'visible'); 
-				    next(); 
-				  });
-				
-				$('.chatbootstart2')
-				  .delay(1400)
-				  .queue(function (next) { 
-				    $(this).css('visibility', 'visible'); 
-				    next(); 
-				  });
-				var consultNum = '<%=consultNum%>';
-				
-			});
 		</script>
 		<script>
-	function submitboot(i,q){
-		
-		var onmessagedata = i;
-		var sendmessagedata = q;
-		var fromID = '<%=toID%>';
-  		var toID = '<%=userID%>';
-  		var chatRoomNum ='<%=consultNum%>';
-		
-  		sessionStorage.removeItem("sendmessagedata");
-  		sessionStorage.setItem("sendmessagedata", sendmessagedata);
-  		
-		$.ajax({
-			type : "POST",
-			url : "chatSubmit",
-			data : {
-				fromID : encodeURIComponent(toID),
-				toID : encodeURIComponent(fromID),
-				chatContent : encodeURIComponent(sendmessagedata),
-				chatRoomNum : chatRoomNum
-			}
-		}).done(function() {
-			$('#chatList').append('<li class="sent-message message">' +
-	  				'<div class="message__content">' +
-	  				'<span class="message__bubble" style="word-break:break-all;">' +
-	  				q +
-	  				'</span>' +
-	  				'</div>' +
-	  				' </li>');
-			$.ajax({
-				type : "POST",
-				url : "chatSubmit",
-				data : {
-					fromID : encodeURIComponent(fromID),
-					toID : encodeURIComponent(toID),
-					chatContent : encodeURIComponent(onmessagedata),
-					chatRoomNum : chatRoomNum
-
-				}
-			}).done(function() {
-				$('#chatList').append('<li class="incoming-message message">' + 
-						'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
-		  				'<div class="message__content">' +
-		  				'<span class="message__bubble" style="word-break:break-all;">' +
-		  				i +
-		  				'</span>' +
-		  				'<span class="message__author">lady</span>'+
-		  				'</div>' +
-		  				'</li>' +
-		  				'<li class="incoming-message message">' + 
-						'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
-		  				'<div class="message__content">' +
-		  				'<span class="message__bubble" style="word-break:break-all;">' +
-		  				'<button type="button" class="btn btn-secondary" onclick="replayboot()">메뉴</button><button type="button" class="btn btn-secondary" onclick="adminchat()">상담원연결</button>'+
-		  				'</span>' +
-		  				'<span class="message__author">lady</span>'+
-		  				'</div>' +
-		  				' </li>'		
-				);
-				$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
-			});
+		$(document).ready(function() {
+			chatListFunction('ten');
 		});
-	}
-	
-	function replayboot(){
-		var el = $("#innerhtml").html();
-		$('#chatList').append(el);
-		$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
-	}
-	
-	function adminchat(){
-		webSocket.send("AdminCallPlease입니다.");
-  		
-	}
-	
-	
-	function buttonback_click() {
-		
-		var fromID = '<%=userID%>';
-  		var chatRoomNum = '<%=consultNum%>';
-  		var chatRoomSubject = sessionStorage.getItem("sendmessagedata");
-		
-  		if (!chatRoomSubject) {
-  			alert("요골타나?")
-  			
-  			$.ajax({
-		  	    url: "chatindex",
-		  	  	cache: false
-		   }).done(function (fragment) {
-		         $("#change").replaceWith(fragment);
-		    });
-			
-		} else {
-			$.ajax({
-				type : "POST",
-				url : "chatRoomSetting",
-				data : {
-					fromID : encodeURIComponent(fromID),
-					chatRoomNum : chatRoomNum,
-					chatRoomSubject : encodeURIComponent(chatRoomSubject)
-				}
-			}).done(function() {
-				
-				sessionStorage.removeItem("sendmessagedata");
-				
-				$.ajax({
-			  	    url: "chatindex",
-			  	  	cache: false
-			   }).done(function (fragment) {
-			         $("#change").replaceWith(fragment);
-			    });
-				
-			});
-		}
-	}
-	
-</script>
+		</script>
+
 
 	</div>
 </body>
