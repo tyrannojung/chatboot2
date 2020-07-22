@@ -54,7 +54,7 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
         
         
         <div>
-        <c:forEach var="item" items="${ChatRoomList}"> 
+        <c:forEach var="item" items="${ChatRoomList}"  varStatus="status"> 
 			<a href='javascript:void(0);' class="nav__list-link" onclick="button_chatroom()">
 				<li class="friends__friend friend friend--lg">
 		          <div class="friend__column">
@@ -64,7 +64,7 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 		              <c:set var="complete" value="${item.chatcomplete}"/>
 			            <c:choose>
 						    <c:when test="${complete eq '0'}">
-						        <c:out value="상담진행중"/>
+						        ${status.count}.<c:out value="상담진행중"/>
 						    </c:when>
 						    <c:otherwise>
 						      	<c:out value="상담완료"/>
