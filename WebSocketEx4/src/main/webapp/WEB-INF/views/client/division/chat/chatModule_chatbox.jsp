@@ -55,7 +55,7 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
         
         <div>
         <c:forEach var="item" items="${ChatRoomList}"  varStatus="status"> 
-			<a href='javascript:void(0);' class="nav__list-link" onclick="button_chatroom()">
+			<a href='javascript:void(0);' class="nav__list-link" onclick="button_chatroom('${status.count}')">
 				<li class="friends__friend friend friend--lg">
 		          <div class="friend__column">
 		              <img src="/ex/resources/chatcss/consultbox.png" class="friend__avatar"/>
@@ -147,7 +147,10 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 		    });
 		}
 		
-		function button_chatroom() {
+		function button_chatroom(roomnum) {
+			alert(roomnum);
+			sessionStorage.removeItem("roomnum");
+	  		sessionStorage.setItem("roomnum", roomnum);
 
 			$.ajax({
 		  	    url: "chatroomlistpage",

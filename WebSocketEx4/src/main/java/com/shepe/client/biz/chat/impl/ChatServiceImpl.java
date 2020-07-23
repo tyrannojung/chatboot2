@@ -18,8 +18,8 @@ public class ChatServiceImpl implements ChatService {
 	public List<CommonChatDTO> getChatListByID(String fromID, String toID, String chatSQ) {
 		return commonChatDAO.getChatListByID(fromID, toID, chatSQ);
 	}
-	public List<CommonChatDTO> getChatListByRecent(String fromID, String toID, int number) {
-		return commonChatDAO.getChatListByRecent(fromID, toID, number);
+	public List<CommonChatDTO> getChatListByRecent(String fromID, String toID, int number, int chatroomnum) {
+		return commonChatDAO.getChatListByRecent(fromID, toID, number, chatroomnum);
 		
 	}
 	public List<CommonChatDTO> getBox(String userID) {

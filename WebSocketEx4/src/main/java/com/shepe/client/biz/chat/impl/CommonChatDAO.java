@@ -29,7 +29,7 @@ public class CommonChatDAO {
 		} 
 		
 		
-		public List<CommonChatDTO> getChatListByRecent(String fromID, String toID, int number) {
+		public List<CommonChatDTO> getChatListByRecent(String fromID, String toID, int number, int chatroomnum) {
 
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("fromID", fromID);
@@ -41,6 +41,7 @@ public class CommonChatDAO {
 			map.put("fromIDrr", toID);
 			map.put("toIDrrr", toID);
 			map.put("fromIDrrr", fromID);
+			map.put("chatroomnum", chatroomnum);
 
 			return mybatis.selectList("CommonChatDAO.getChatListByRecent", map);
 		} 

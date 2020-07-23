@@ -64,14 +64,6 @@
 					<tbody id="boxTable">
 					
 						<tr id="boxTr" onclick="location.href='adminex'" style="cursor:hand">
-							<td>1</td>
-							<td>결제/취소</td>
-							<td><h5>lastID</h5></td>
-							<td>
-								<h5 class="float-left" style="word-break:break-all;">Content</h5><span class="badge badge-pill badge-primary float-right">1</span>
-							</td>
-							<td>chatTime</td>
-							<td>O/X</td>	
 						</tr>
 					</tbody>
 					

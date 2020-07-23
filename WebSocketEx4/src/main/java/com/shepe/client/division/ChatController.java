@@ -203,9 +203,9 @@ public class ChatController {
 	
 	@RequestMapping(value="/chatList",produces = "application/text; charset=utf8", method=RequestMethod.POST)
 	@ResponseBody
-	public String chatList(@RequestParam String fromID, @RequestParam String toID, @RequestParam String listType)  throws IOException {
+	public String chatList(@RequestParam String fromID, @RequestParam String toID, @RequestParam String listType, @RequestParam int chatroomnum)  throws IOException {
 
-		if (listType.equals("ten")) return getTen(URLDecoder.decode(fromID,"UTF-8"), URLDecoder.decode(toID, "UTF-8")); //from id, to id  는 한글로 작성되어있을수도 있기때문에 디코더를 사용해야한다.
+		if (listType.equals("ten")) return getTen(URLDecoder.decode(fromID,"UTF-8"), URLDecoder.decode(toID, "UTF-8"), chatroomnum); //from id, to id  는 한글로 작성되어있을수도 있기때문에 디코더를 사용해야한다.
 		else {
 			try {
 				return getID(URLDecoder.decode(fromID,"UTF-8"), URLDecoder.decode(toID, "UTF-8"), listType);
@@ -244,15 +244,15 @@ public class ChatController {
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	@ResponseBody
-	public String getTen(String fromID, String toID) {// 최근 메세지 10개까지인데 아래 숫자고침으로써 100개로 변경
+	public String getTen(String fromID, String toID, int chatroomnum) {// 최근 메세지 10개까지인데 아래 숫자고침으로써 100개로 변경
 		StringBuffer result = new StringBuffer("");
 		result.append("{\"result\":[");
-		List<CommonChatDTO> chatList = chatService.getChatListByRecent(fromID, toID, 100);
+		List<CommonChatDTO> chatList = chatService.getChatListByRecent(fromID, toID, 100, chatroomnum);
 		if(chatList.size() == 0) return "";
 		for(int i = 0; i <chatList.size(); i++) {
 			result.append("[{\"value\": \"" + chatencoding.encoding(chatList.get(i).getFromID()) + "\"},");
 			result.append("{\"value\": \"" + chatencoding.encoding(chatList.get(i).getToID()) + "\"},");
-			result.append("{\"value\": \"" + chatencoding.encoding(chatList.get(i).getChatContent()) + "\"},");
+			result.append("{\"value\": \"" + chatList.get(i).getChatContent() + "\"},");
 			result.append("{\"value\": \"" + chatencoding.encoding(chatList.get(i).getChatTime()) + "\"}]");
 			if(i != chatList.size() -1) result.append(",");
 		}

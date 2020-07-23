@@ -11,7 +11,7 @@
 	</select>
 	<select id="getChatListByRecent" resultType="chat">
 		<![CDATA[
-			SELECT * FROM CHAT WHERE ((fromID = #{fromID} AND toID =#{toID}) OR (fromID = #{fromIDr} AND toID =#{toIDr})) AND chatsq > (SELECT MAX(chatsq) - #{number} FROM CHAT WHERE (fromID =#{toIDrr} AND toID = #{fromIDrr}) OR (fromID = #{toIDrrr} AND toID = #{fromIDrrr})) ORDER BY chatTime
+			SELECT * FROM CHAT WHERE ((fromID = #{fromID} AND toID =#{toID}) OR (fromID = #{fromIDr} AND toID =#{toIDr}))AND chatroomnum= #{chatroomnum} AND chatsq > (SELECT MAX(chatsq) - #{number} FROM CHAT WHERE (fromID =#{toIDrr} AND toID = #{fromIDrr}) OR (fromID = #{toIDrrr} AND toID = #{fromIDrrr})) ORDER BY chatTime
 		]]>
 	</select>
 	<select id="getBox" resultType="chat">

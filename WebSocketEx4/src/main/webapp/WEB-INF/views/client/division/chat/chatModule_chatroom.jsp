@@ -49,12 +49,12 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 			<div class="header-wrapper" style="position: absolute;">
 				<header class="header" style="margin-bottom: 0px;">
 					<div class="header__header-column">
-						<div class="header__back-btn" onclick="buttonback_click()">
+						<div class="header__back-btn" onclick="chatroom_butback_click()">
 							<i class="fas fa-arrow-left"></i>
 						</div>
 					</div>
 					<div class="header__header-column">
-						<h1 class="header__title">Lady bug</h1>
+						<h1 class="header__title">지난 상담 내역</h1>
 					</div>
 					<div class="header__header-column">
 						<span class="header__icon"> <i class="fas fa-cog"></i>
@@ -121,13 +121,15 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 	function chatListFunction(type) {
   		var fromID = '<%=userID %>';
   		var toID = '<%= toID %>';
+  		var chatroomnum = sessionStorage.getItem("roomnum");
   		$.ajax({
   			type: "POST",
   			url: "chatList",
   			data: {
   				fromID: encodeURIComponent(fromID),
   				toID: encodeURIComponent(toID),
-  				listType: type
+  				listType: type,
+  				chatroomnum: chatroomnum
   			},
   			success: function(data) {
          
@@ -136,8 +138,10 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
   				for(var i = 0; i < result.length; i++) {
   					if(result[i][0].value == fromID) {
   						result[i][0].value ='나';
+  						addChat(result[i][0].value, result[i][2].value, result[i][3].value);
+  					} else {
+  						addAdminChat(result[i][0].value, result[i][2].value, result[i][3].value);
   					}
-  					addChat(result[i][0].value, result[i][2].value, result[i][3].value);
   				}
   				lastID = Number(parsed.last);
   				
@@ -145,27 +149,36 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
   		});
   	}
   	function addChat(chatName, chatContent, chatTime) {
-  		$('#chatList').append('<li class="incoming-message message">' + 
+  		$('#chatList').append('<li class="sent-message message">' + 
   				'<div class="message__content">' +
-  				'<span class="message__bubble">' +
+  				'<span class="message__bubble" style="word-break:break-all;">' +
   				chatContent +
   				'</span>' +
   				'<span class="message__author">'+
   				chatName +
   				'</span>' +
   				'</div>' +
-  				'<div class="media-body">' +
   				' </li>');
   		$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
   	}  	
-		
-		
-		
-		
-		
-		
-		
-		
+  	
+  	function addAdminChat(chatName, chatContent, chatTime) {
+  		$('#chatList').append(
+  				'<li class="incoming-message message">' + 
+  				'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
+  				'<div class="message__content">' +
+  				'<span class="message__bubble" style="word-break:break-all;">' +
+  				chatContent +
+  				'</span>' +
+  				'<span class="message__author">'+
+  				chatName +
+  				'</span>' +
+  				'</div>' +
+  				' </li>');
+  		$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
+  			
+  	}  	
+  	
 		
 		// 서버로 메시지를 발송하는 함수
 		// Send 버튼을 누르거나 텍스트 박스에서 엔터를 치면 실행
@@ -226,6 +239,17 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 				}
 				return true;
 			}
+			
+			function chatroom_butback_click() {
+
+				$.ajax({
+			  	    url: "chatlist",
+			  	  	cache: false
+			   }).done(function (fragment) {
+			         $("#change").replaceWith(fragment);
+			    });
+			}
+			
 		</script>
 		<script>
 		$(document).ready(function() {

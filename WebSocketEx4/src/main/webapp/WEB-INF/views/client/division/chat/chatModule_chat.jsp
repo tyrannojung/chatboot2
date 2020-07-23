@@ -321,8 +321,7 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
   		var chatRoomSubject = sessionStorage.getItem("sendmessagedata");
 		
   		if (!chatRoomSubject) {
-  			alert("요골타나?")
-  			
+
   			$.ajax({
 		  	    url: "chatindex",
 		  	  	cache: false
