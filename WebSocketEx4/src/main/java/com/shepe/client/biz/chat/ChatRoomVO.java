@@ -9,6 +9,7 @@ public class ChatRoomVO {
 	private int chatcomplete;
 	private String chatsubject;
 	private Date chatdate;
+	private int consultsq;
 	
 	public String getUserid() {
 		return userid;
@@ -40,4 +41,12 @@ public class ChatRoomVO {
 	public void setChatdate(Date chatdate) {
 		this.chatdate = chatdate;
 	}
+	public int getConsultsq() {
+		return consultsq;
+	}
+	public void setConsultsq(int consultsq) {
+		this.consultsq = consultsq;
+	}
+	
+	
 }

@@ -77,7 +77,7 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 				style="position: absolute;">
 				<input id="chatContent" type="text" class="chat__write"
 					placeholder="Send message" class="chat__write-input"
-					style="margin-bottom: 90px; position: fixed; width: 310px; top: 780px;"
+					style="margin-bottom: 90px; position: fixed; width: 310px; top: 580px;"
 					onkeydown="return enter()" />
 			</div>
 		</div>

@@ -48,7 +48,9 @@ public class ChatController {
 	@ResponseBody
 	@RequestMapping("/admin_chatroomone")
 	public List<ChatRoomVO>  admin_chatroomone(@RequestParam String userID) {
-
+		System.out.println("여기타나?");
+		System.out.println(userID);
+		
 		return chatService.admin_chatroomone(userID);
 	}
 	

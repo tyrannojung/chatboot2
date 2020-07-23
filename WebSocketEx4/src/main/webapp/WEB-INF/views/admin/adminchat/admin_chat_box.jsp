@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+<%@ page import="com.shepe.client.biz.chat.ChatRoomVO" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
@@ -57,7 +59,7 @@
 				<table class="table table-bordered table-hover" style="text-align: center; border: 1px solid #dddddd; margin: 0 auto;">
 					<thead>
 						<tr>
-							<td style="width: 50px;">No</td><td style="width: 150px;">분류</td><td style="width: 100px;">ID</td><td>내용</td><td style="width: 50px;">날짜</td><td style="width: 50px;">Result</td>
+							<td style="width: 50px;">No</td><td style="width: 150px;">분류</td><td style="width: 100px;">ID</td><td style="width: 100px;">날짜</td><td style="width: 50px;">Result</td>
 						</tr>
 					</thead>
 					<tbody id="boxTable">
@@ -108,30 +110,28 @@ var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
 			$.ajax({
 				type : "POST",
 				url : "admin_chatroomone",
-				dataType: "JSON",
 				data : {
-					userID : encodeURIComponent(clientUserID),
+					userID : encodeURIComponent(clientUserID)
 				},
+				dataType: "JSON",
 				success : function(result) {
-		
+					alert("성");
 			        $.each(result, function(index, value){
 			        	
 			        	$('#boxTable').append("<tr onclick=" + 
 								 "\"location.href='adminex'\""+
-								        "style='cursor:hand'><td>1</td>"+
-										"<td>결제/취소</td>"+
+								        "style='cursor:hand'><td>" + value.consultsq + "</td>"+
+										"<td>" + value.chatsubject + "</td>"+
 										"<td><h5>" +
 										value.userid +
 								        "</h5></td>"+
-										"<td>"+
-											"<h5 class='float-left' style='word-break:break-all;'>Content</h5><span class='badge badge-pill badge-primary float-right'>1</span>"+
-										"</td>"+
-										"<td>chatTime</td>"+
+										"<td>"+value.chatdate+"</td>"+
 										"<td>O/X</td>"
 						);
-			        	
-			        	
 			        });
+				},
+				error: function(request, status, error) {
+					alert("오류");
 				}
 			});
 

@@ -52,7 +52,7 @@
 	
 	<insert id="chatRoomSetting">
 		<![CDATA[
-			INSERT INTO CHATROOM VALUES (#{fromID}, #{chatRoomNum}, 0, #{chatRoomSubject}, sysdate())
+			INSERT INTO CHATROOM VALUES (#{fromID}, #{chatRoomNum}, 0, #{chatRoomSubject}, sysdate(), null)
 		]]>
 	</insert>
 	
