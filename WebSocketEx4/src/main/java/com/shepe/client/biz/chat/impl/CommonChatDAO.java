@@ -125,4 +125,8 @@ public class CommonChatDAO {
 			return mybatis.selectList("CommonChatDAO.chatroomlist", userID);
 		}
 		
+		public List<ChatRoomVO> admin_chatroomone(String userID) {
+			return mybatis.selectList("CommonChatDAO.admin_chatroomone", userID);
+		}
+		
 	}

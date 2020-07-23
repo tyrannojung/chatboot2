@@ -309,8 +309,23 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 	}
 	
 	function adminchat(){
-		webSocket.send("AdminCallPlease입니다.");
-  		
+		
+		var fromID = '<%=userID%>';
+  		var chatRoomNum = '<%=consultNum%>';
+  		var chatRoomSubject = sessionStorage.getItem("sendmessagedata");
+
+		$.ajax({
+			type : "POST",
+			url : "chatRoomSetting",
+			data : {
+				fromID : encodeURIComponent(fromID),
+				chatRoomNum : chatRoomNum,
+				chatRoomSubject : encodeURIComponent(chatRoomSubject)
+			}
+		}).done(function() {
+			sessionStorage.removeItem("sendmessagedata");
+			webSocket.send("AdminCallPlease입니다.");
+		});
 	}
 	
 	
@@ -321,7 +336,7 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
   		var chatRoomSubject = sessionStorage.getItem("sendmessagedata");
 		
   		if (!chatRoomSubject) {
-
+			
   			$.ajax({
 		  	    url: "chatindex",
 		  	  	cache: false

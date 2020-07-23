@@ -14,4 +14,5 @@ public interface ChatService {
 	int chatListNum(String userID);
 	void chatRoomSetting(String fromID, int chatRoomNum, String chatRoomSubject);
 	List<ChatRoomVO> chatroomlist(String userID);
+	List<ChatRoomVO> admin_chatroomone(String userID);
 }

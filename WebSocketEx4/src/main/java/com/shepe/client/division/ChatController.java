@@ -45,6 +45,17 @@ public class ChatController {
 		return "/admin/adminchat/admin_index";
 	}
 	
+	@ResponseBody
+	@RequestMapping("/admin_chatroomone")
+	public List<ChatRoomVO>  admin_chatroomone(@RequestParam String userID) {
+
+		return chatService.admin_chatroomone(userID);
+	}
+	
+	
+	
+	
+	
 	@RequestMapping("/messageBox")
 	public String messageBox() {
 		return "/admin/adminchat/admin_chat_box";
@@ -57,7 +68,6 @@ public class ChatController {
 		BootVO vo = bootservice.BootContent();
 		
 		session.setAttribute("BootContent", vo);
-		System.out.println(vo.toString());
 		
 		return "redirect:/";
 	}
@@ -129,11 +139,8 @@ public class ChatController {
 		boot_question = chatencoding.encoding(boot_question);
 		boot_answer = chatencoding.encoding(boot_answer);
 		boot_choice = chatencoding.encoding(boot_choice);
-		
-		System.out.println(boot_question + "," + boot_answer + "," + boot_choice);
+
 		bootservice.qaBoot(boot_question, boot_answer, boot_choice);
-		
-		
 	}
 	
 	
@@ -156,7 +163,6 @@ public class ChatController {
 		HttpSession session = request.getSession();
 		String userID= (String)session.getAttribute("userID");
 		int a = chatService.chatListNum(userID);
-		
 		session.setAttribute("consultRoomNum", a);
 		
 		session.removeAttribute("consultNum");
@@ -169,6 +175,8 @@ public class ChatController {
 		
 		HttpSession session = request.getSession();
 		String userID = (String) session.getAttribute("userID");
+		int a = chatService.chatListNum(userID);
+		session.setAttribute("consultRoomNum", a);
 		List<ChatRoomVO> vo = chatService.chatroomlist(userID);
 		session.setAttribute("ChatRoomList", vo);
 
@@ -257,7 +265,6 @@ public class ChatController {
 			if(i != chatList.size() -1) result.append(",");
 		}
 		result.append("], \"last\":\"" + chatList.get(chatList.size() - 1).getChatSQ() + "\"}");
-		System.out.println("1."+result.toString());
 		chatService.readChat(fromID, toID); // 반환직전에 모든 채팅을 다 읽었다고 알려준다. 
 		return result.toString();
 	}
@@ -276,7 +283,6 @@ public class ChatController {
 			if(i != chatList.size() -1) result.append(",");
 		}
 		result.append("], \"last\":\"" + chatList.get(chatList.size() - 1).getChatSQ() + "\"}");
-		System.out.println("2."+result.toString());
 		chatService.readChat(fromID, toID); // 반환직전에 모든 채팅을 다 읽었다고 알려준다. 
 		return result.toString();
 	}

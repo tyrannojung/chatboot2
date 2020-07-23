@@ -49,5 +49,9 @@ public class ChatServiceImpl implements ChatService {
 	public List<ChatRoomVO> chatroomlist(String userID) {
 		return commonChatDAO.chatroomlist(userID);
 	}
+	
+	public List<ChatRoomVO> admin_chatroomone(String userID) {
+		return commonChatDAO.admin_chatroomone(userID);
+	}
 
 }

@@ -62,5 +62,13 @@
 		]]>
 	</select>
 	
+	
+	<select id="admin_chatroomone" resultType="chatlist">
+		<![CDATA[
+			SELECT * FROM CHATROOM WHERE USERID = #{userID} AND (CHATROOMNUM = (SELECT MAX(CHATROOMNUM) FROM CHATROOM WHERE USERID = #{userID})) 
+		]]>
+	</select>
+	
+	
 </mapper>
 

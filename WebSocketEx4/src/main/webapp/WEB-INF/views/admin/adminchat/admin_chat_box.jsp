@@ -60,11 +60,11 @@
 							<td style="width: 50px;">No</td><td style="width: 150px;">분류</td><td style="width: 100px;">ID</td><td>내용</td><td style="width: 50px;">날짜</td><td style="width: 50px;">Result</td>
 						</tr>
 					</thead>
-					
 					<tbody id="boxTable">
 					
 						<tr id="boxTr" onclick="location.href='adminex'" style="cursor:hand">
 						</tr>
+						
 					</tbody>
 					
 				</table>
@@ -103,19 +103,38 @@ var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
 		// visit은 유저가 접속했을 때 알리는 메시지다.
 		if (node.status === "AdminCall") {
 			
-			$('#boxTable').append("<tr onclick=" + 
-					 "\"location.href='adminex'\""+
-					        "style='cursor:hand'><td>1</td>"+
-							"<td>결제/취소</td>"+
-							"<td><h5>" +
-							node.key +
-					        "</h5></td>"+
-							"<td>"+
-								"<h5 class='float-left' style='word-break:break-all;'>Content</h5><span class='badge badge-pill badge-primary float-right'>1</span>"+
-							"</td>"+
-							"<td>chatTime</td>"+
-							"<td>O/X</td>"
-			);
+			var clientUserID = node.key;
+			
+			$.ajax({
+				type : "POST",
+				url : "admin_chatroomone",
+				dataType: "JSON",
+				data : {
+					userID : encodeURIComponent(clientUserID),
+				},
+				success : function(result) {
+		
+			        $.each(result, function(index, value){
+			        	
+			        	$('#boxTable').append("<tr onclick=" + 
+								 "\"location.href='adminex'\""+
+								        "style='cursor:hand'><td>1</td>"+
+										"<td>결제/취소</td>"+
+										"<td><h5>" +
+										value.userid +
+								        "</h5></td>"+
+										"<td>"+
+											"<h5 class='float-left' style='word-break:break-all;'>Content</h5><span class='badge badge-pill badge-primary float-right'>1</span>"+
+										"</td>"+
+										"<td>chatTime</td>"+
+										"<td>O/X</td>"
+						);
+			        	
+			        	
+			        });
+				}
+			});
+
 
 			
 			// message는 유저가 메시지를 보낼 때 알려주는 메시지이다.
