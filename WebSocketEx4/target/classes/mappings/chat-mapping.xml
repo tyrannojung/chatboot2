@@ -52,7 +52,7 @@
 	
 	<insert id="chatRoomSetting">
 		<![CDATA[
-			INSERT INTO CHATROOM VALUES (#{fromID}, #{chatRoomNum}, 0, #{chatRoomSubject}, sysdate(), null)
+			INSERT INTO CHATROOM VALUES (#{fromID}, #{chatRoomNum}, 0, #{chatRoomSubject}, sysdate(), null, #{admincall})
 		]]>
 	</insert>
 	
@@ -68,6 +68,13 @@
 			SELECT * FROM CHATROOM WHERE USERID = #{userID} AND (CHATROOMNUM = (SELECT MAX(CHATROOMNUM) FROM CHATROOM WHERE USERID = #{userID})) 
 		]]>
 	</select>
+	
+	<select id="admin_chatroomList" resultType="chatlist">
+		<![CDATA[
+			SELECT * FROM CHATROOM WHERE admincall=1 ORDER BY consultsq DESC LIMIT 0,10 
+		]]>
+	</select>
+	
 	
 	
 </mapper>

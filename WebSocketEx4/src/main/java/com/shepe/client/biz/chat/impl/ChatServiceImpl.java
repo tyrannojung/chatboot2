@@ -42,16 +42,20 @@ public class ChatServiceImpl implements ChatService {
 		return commonChatDAO.chatListNum(userID);
 	}
 	
-	public void chatRoomSetting(String fromID, int chatRoomNum, String chatRoomSubject) {
-		commonChatDAO.chatRoomSetting(fromID,chatRoomNum,chatRoomSubject);
+	public void chatRoomSetting(String fromID, int chatRoomNum, String chatRoomSubject, int admincall) {
+		commonChatDAO.chatRoomSetting(fromID,chatRoomNum,chatRoomSubject,admincall);
 	}
 	
 	public List<ChatRoomVO> chatroomlist(String userID) {
 		return commonChatDAO.chatroomlist(userID);
 	}
 	
-	public List<ChatRoomVO> admin_chatroomone(String userID) {
+	public ChatRoomVO admin_chatroomone(String userID) {
 		return commonChatDAO.admin_chatroomone(userID);
+	}
+	
+	public List<ChatRoomVO> admin_chatroomList() {
+		return commonChatDAO.admin_chatroomList();
 	}
 
 }

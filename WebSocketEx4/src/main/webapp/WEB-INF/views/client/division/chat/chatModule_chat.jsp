@@ -102,7 +102,7 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 				style="position: absolute;">
 				<input id="chatContent" type="text" class="chat__write"
 					placeholder="Send message" class="chat__write-input"
-					style="margin-bottom: 90px; position: fixed; width: 310px; top: 580px;"
+					style="margin-bottom: 90px; position: fixed; width: 310px; top: 780px;"
 					onkeydown="return enter()" />
 			</div>
 		</div>
@@ -320,7 +320,8 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 			data : {
 				fromID : encodeURIComponent(fromID),
 				chatRoomNum : chatRoomNum,
-				chatRoomSubject : encodeURIComponent(chatRoomSubject)
+				chatRoomSubject : encodeURIComponent(chatRoomSubject),
+				admincall : 1
 			}
 		}).done(function() {
 			sessionStorage.removeItem("sendmessagedata");

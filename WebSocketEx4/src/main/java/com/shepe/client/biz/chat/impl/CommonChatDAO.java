@@ -113,11 +113,12 @@ public class CommonChatDAO {
 			return mybatis.selectOne("CommonChatDAO.chatListNum", userID);
 		}
 		
-		public void chatRoomSetting(String fromID, int chatRoomNum, String chatRoomSubject) {
+		public void chatRoomSetting(String fromID, int chatRoomNum, String chatRoomSubject, int admincall) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("fromID", fromID);
 			map.put("chatRoomNum", chatRoomNum);
 			map.put("chatRoomSubject", chatRoomSubject);
+			map.put("admincall", admincall);
 			mybatis.update("CommonChatDAO.chatRoomSetting", map);
 		}
 		
@@ -125,8 +126,14 @@ public class CommonChatDAO {
 			return mybatis.selectList("CommonChatDAO.chatroomlist", userID);
 		}
 		
-		public List<ChatRoomVO> admin_chatroomone(String userID) {
-			return mybatis.selectList("CommonChatDAO.admin_chatroomone", userID);
+		public ChatRoomVO admin_chatroomone(String userID) {
+			return mybatis.selectOne("CommonChatDAO.admin_chatroomone", userID);
 		}
+		
+		
+		public List<ChatRoomVO> admin_chatroomList() {
+			return mybatis.selectList("CommonChatDAO.admin_chatroomList");
+		}
+
 		
 	}

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,13 +46,29 @@ public class ChatController {
 		return "/admin/adminchat/admin_index";
 	}
 	
+	@RequestMapping("/admin_getChatroom")
+	public String admin_testtest(@RequestParam String fromId, @RequestParam String toId, @RequestParam String chatroomnum, Model model) {
+		System.out.println(fromId + "," + toId + "," + chatroomnum);
+		
+		int chatnum = Integer.parseInt(chatroomnum);
+		
+		model.addAttribute("getChatroomList", chatService.getChatListByRecent(toId, fromId, 100, chatnum));
+		model.addAttribute("getChatroom", chatService.admin_chatroomone(fromId));
+
+		return "/admin/adminchat/admin_chatroom";
+	}
+	
 	@ResponseBody
 	@RequestMapping("/admin_chatroomone")
-	public List<ChatRoomVO>  admin_chatroomone(@RequestParam String userID) {
-		System.out.println("여기타나?");
-		System.out.println(userID);
-		
+	public ChatRoomVO admin_chatroomone(@RequestParam String userID) {
+
 		return chatService.admin_chatroomone(userID);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/admin_chatroomList")
+	public List<ChatRoomVO> admin_chatroomList() {
+		return chatService.admin_chatroomList();
 	}
 	
 	
@@ -191,10 +208,7 @@ public class ChatController {
 		return "/client/division/chat/chatModule_chatroom";
 	}
 	
-	
-	
-	
-	
+
 	@RequestMapping("/adminex")
 	public String adminex() {
 
@@ -203,12 +217,20 @@ public class ChatController {
 	
 	@RequestMapping(value="/chatRoomSetting", produces = "application/text; charset=utf8", method=RequestMethod.POST)
 	@ResponseBody
-	public void chatRoomSetting(@RequestParam String fromID, @RequestParam int chatRoomNum, @RequestParam String chatRoomSubject) throws IOException {
+	public void chatRoomSetting(@RequestParam String fromID, @RequestParam int chatRoomNum, @RequestParam String chatRoomSubject, @RequestParam(value="admincall", required=false) String admincall) throws IOException {
 		
-		chatRoomSubject = URLDecoder.decode(chatRoomSubject, "UTF-8");
-		fromID = URLDecoder.decode(fromID, "UTF-8");
-		chatService.chatRoomSetting(fromID,chatRoomNum,chatRoomSubject);
-		
+		if(admincall != null) {
+			
+			System.out.println("null이 아닐때");
+			chatRoomSubject = URLDecoder.decode(chatRoomSubject, "UTF-8");
+			fromID = URLDecoder.decode(fromID, "UTF-8");
+			chatService.chatRoomSetting(fromID,chatRoomNum,chatRoomSubject,1);
+			
+		} else {
+			chatRoomSubject = URLDecoder.decode(chatRoomSubject, "UTF-8");
+			fromID = URLDecoder.decode(fromID, "UTF-8");
+			chatService.chatRoomSetting(fromID,chatRoomNum,chatRoomSubject,0);
+		}
 	}
 	
 	@RequestMapping(value="/chatList",produces = "application/text; charset=utf8", method=RequestMethod.POST)

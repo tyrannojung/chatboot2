@@ -10,6 +10,7 @@ public class ChatRoomVO {
 	private String chatsubject;
 	private Date chatdate;
 	private int consultsq;
+	private int admincall;
 	
 	public String getUserid() {
 		return userid;
@@ -47,6 +48,11 @@ public class ChatRoomVO {
 	public void setConsultsq(int consultsq) {
 		this.consultsq = consultsq;
 	}
-	
+	public int getAdmincall() {
+		return admincall;
+	}
+	public void setAdmincall(int admincall) {
+		this.admincall = admincall;
+	}
 	
 }

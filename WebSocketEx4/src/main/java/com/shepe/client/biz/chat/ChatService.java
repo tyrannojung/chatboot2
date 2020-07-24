@@ -12,7 +12,8 @@ public interface ChatService {
 	int getAllUnreadChat(String userID);
 	int getUnreadChat(String fromID, String toID);
 	int chatListNum(String userID);
-	void chatRoomSetting(String fromID, int chatRoomNum, String chatRoomSubject);
+	void chatRoomSetting(String fromID, int chatRoomNum, String chatRoomSubject, int admincall);
 	List<ChatRoomVO> chatroomlist(String userID);
-	List<ChatRoomVO> admin_chatroomone(String userID);
+	ChatRoomVO admin_chatroomone(String userID);
+	List<ChatRoomVO> admin_chatroomList();
 }

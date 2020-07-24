@@ -15,7 +15,7 @@
 </head>
 <body>
      <div class="container">
-     <aside style="float:right; position: fixed; right: 5px; bottom: 95px; top: 80px; z-index: 1;  ">
+     <aside style="float:right; position: fixed; right: 5px; bottom: 95px; top: 280px; z-index: 1;  ">
 	    <div id ="changechat">
 	 		 
 <div id ="change">

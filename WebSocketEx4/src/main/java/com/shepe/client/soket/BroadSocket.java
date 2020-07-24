@@ -31,7 +31,6 @@ public class BroadSocket {
 // browser에서 웹 소켓으로 접속하면 호출되는 함수
 	@OnOpen
 	public void handleOpen(Session userSession, @PathParam("userID") String userID) {
-		System.out.println("오픈은하나? ?");
 		
 			clientMap.put(userID, userSession);
 			
@@ -43,6 +42,7 @@ public class BroadSocket {
 	@OnMessage
 	public void handleMessage(String message, Session userSession) throws IOException {
 // Session으로 접속 리스트에서 User 클래스를 탐색
+		System.out.println("탑니까?");
 		String key = getKey(clientMap, userSession);
 		Admin.sendMessage(key, message);	
 	}
@@ -52,14 +52,17 @@ public class BroadSocket {
 // key로 접속 리스트에서 User 클래스를 탐색
 
 		Session stream = clientMap.get(key);
-// 접속 리스트에 User가 있으면(당연히 있다. 없으면 버그..)
+		
+		if(stream == null) {
+			// 디비에만 저장한다.
+		} else {
 			try {
-// 유저 Session으로 socket을 취득한 후 메시지를 전송한다.
 				stream.getBasicRemote().sendText(message);
 			} catch (IOException e) {
-				e.printStackTrace();
+				e.printStackTrace(); // 접속이 안되어있으면 디비에만 저장해 놔도 될듯.
 			}
 		}
+	}
 
 // WebSocket이 종료가 되면, 종료 버튼이 없기 때문에 유저 브라우저가 닫히면 발생한다.
 	@OnClose
