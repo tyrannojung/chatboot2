@@ -1,5 +1,7 @@
 package com.shepe.admin.biz.chat;
 
+import java.sql.Date;
+
 public class CounselingVO {
 	
 	private String h_userid;
@@ -9,6 +11,7 @@ public class CounselingVO {
 	private String h_ok;
 	private int consultsq;
 	private int historysq;
+	private Date h_date;
 	
 	
 	public String getH_userid() {
@@ -54,7 +57,12 @@ public class CounselingVO {
 	public void setHistorysq(int historysq) {
 		this.historysq = historysq;
 	}
-
+	public Date getH_date() {
+		return h_date;
+	}
+	public void setH_date(Date h_date) {
+		this.h_date = h_date;
+	}
 	
 
 }

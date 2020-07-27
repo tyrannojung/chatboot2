@@ -77,6 +77,8 @@ public class ChatController {
 		model.addAttribute("getChatroomList", chatService.getChatListByRecent(toId, fromId, 100, chatnum));
 		
 		model.addAttribute("chatroomVO", chatService.admin_chatroomone(fromId));
+		
+		model.addAttribute("counselingList", counselingservice.getCounselingList());
 
 		return "/admin/adminchat/admin_chatroom";
 	}

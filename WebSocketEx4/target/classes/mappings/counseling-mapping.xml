@@ -6,7 +6,7 @@
 
 	<insert id="counselingAdd">
 		<![CDATA[
-			INSERT INTO counseling_history VALUES (#{h_userid}, #{h_adminid}, #{h_subject}, #{h_content}, #{h_ok}, #{consultsq}, null)
+			INSERT INTO counseling_history VALUES (#{h_userid}, #{h_adminid}, #{h_subject}, #{h_content}, #{h_ok}, #{consultsq}, null, now())
 		]]>
 	</insert>
 

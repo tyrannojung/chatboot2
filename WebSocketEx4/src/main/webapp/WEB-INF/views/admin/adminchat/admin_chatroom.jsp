@@ -77,7 +77,7 @@
       
       
        		<div class="modal" id="counseling_history">
-       			<form method="post" id="history" name="counseling">
+       			<form method="post" id="history" name="counseling"  onsubmit="return false;">
 			    <div class="modal-dialog">
 			      <div class="modal-content">
 			        <div class="modal-header">
@@ -118,7 +118,7 @@
 			        </div>
 			        
 			        <div class="modal-footer">
-			          <button type="submit" class="btn btn-primary" onclick="submitcheck();">작성</button>
+			          <button type="submit" class="btn btn-primary" onclick="submitcheck();" data-dismiss="modal">작성</button>
 			          <button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
 			        </div>
 			      </div>
@@ -325,7 +325,6 @@ function submitcheck(){
             type : 'POST', 
             data : formData
         });
-        return false;
 }
 
 
