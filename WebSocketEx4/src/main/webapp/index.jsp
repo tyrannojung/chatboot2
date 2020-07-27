@@ -43,10 +43,6 @@
 <section>
 <article>
   <div class="row">
-
-    <div class="col-sm-8">
-      <textarea id="messageTextArea" rows="10" cols="50" disabled="disabled"></textarea>
-    </div>
   </div>
   </article>
   </section>

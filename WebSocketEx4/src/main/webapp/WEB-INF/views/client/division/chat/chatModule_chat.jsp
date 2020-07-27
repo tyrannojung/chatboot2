@@ -109,12 +109,9 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 
 
 		<script type="text/javascript">
-		var messageTextArea = document.getElementById("messageTextArea");
 
 		webSocket.onerror = function(message) {
 			
-			messageTextArea.value += "error...\n";
-
 			$('#chatList').append('<li class="incoming-message message">' + 
 	  				'<div class="message__content">' +
 	  				'<span class="message__bubble">' +
@@ -127,10 +124,23 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 		
 		webSocket.onmessage = function(message) {
 			
-			$(".checkone").replaceWith(); // 채팅방을 누르는것만으로도 메세지가 가게끔한다.
-			
+//			$(".checkone").replaceWith(); // 채팅방을 누르는것만으로도 메세지가 가게끔한다.
 			
 			var onmessagedata = message.data;
+			
+			if(onmessagedata === "AdminConnect입니다." ) {
+				sessionStorage.removeItem("adminconnect");
+				sessionStorage.setItem("adminconnect", "connect");
+				onmessagedata = "상담원이 연결되었습니다."
+				$(".checkone").replaceWith();
+				
+			} else if (onmessagedata === "Adminlogout입니다.") {
+				sessionStorage.removeItem("adminconnect");
+				sessionStorage.setItem("adminconnect", "notConnect");
+				onmessagedata = "잠시만 기다려주시겠습니까?"
+			}
+			
+			
 			var fromID = '<%=userID%>';
 	  		var toID = '<%=toID%>';
 	  		var chatRoomNum ='<%=consultNum%>';
@@ -149,7 +159,7 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 						'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
 		  				'<div class="message__content">' +
 		  				'<span class="message__bubble" style="word-break:break-all;">' +
-		  				message.data +
+		  				onmessagedata +
 		  				'</span>' +
 		  				'<span class="message__author">lady</span>'+
 		  				'</div>' +
@@ -164,8 +174,6 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 		function sendMessage() {
 			// 텍스트 박스의 객체를 가져옴
 			let message = document.getElementById("chatContent");
-			// 콘솔에 메세지를 남긴다.
-			messageTextArea.value += "(me) => " + message.value + "\n";
 			
 			$('#chatList').append('<li class="sent-message message">' +
 					'<span id="checkdb" class="spinner-border text-muted spinner-border-sm" style="margin-top: 20px;"></span>'+
@@ -199,8 +207,13 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 					}
 				}).done(function() {
 					setTimeout(function() {
+						
 						$("#checkdb").replaceWith(changetext);
-
+						
+						if  ( "connect" === sessionStorage.getItem("adminconnect")) {
+							$(".checkone").replaceWith(); 
+						}
+					
 						webSocket.send(chatContent);
 
 					}, 500);

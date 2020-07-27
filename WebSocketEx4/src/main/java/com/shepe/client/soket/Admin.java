@@ -26,10 +26,9 @@ public class Admin {
 // 운영자 유저의 세션을 바꾼다.
 		admin = userSession;
 // 기존에 접속해 있는 유저의 정보를 운영자 client로 보낸다.
-		for (String key : BroadSocket.getUserKeys()) {
-// 전송.. 전송
-			visit(key);
-		}
+//		for (String key : BroadSocket.getUserKeys()) {
+//			visit(key);
+//		}
 	}
 
 // 운영자 유저가 메시지를 보내면 발생하는 이벤트

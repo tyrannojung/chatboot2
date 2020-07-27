@@ -11,6 +11,7 @@
  		<typeAlias alias="chat" type="com.shepe.client.biz.chat.CommonChatDTO" />
  		<typeAlias alias="boot" type="com.shepe.admin.biz.chat.BootVO" />
  		<typeAlias alias="chatlist" type="com.shepe.client.biz.chat.ChatRoomVO" />
+ 		<typeAlias alias="counseling" type="com.shepe.admin.biz.chat.CounselingVO" />
  	</typeAliases>
 
 
@@ -19,5 +20,6 @@
  		<mapper resource="mappings/chat-mapping.xml" />
  		<mapper resource="mappings/join-mapping.xml" />
  		<mapper resource="mappings/boot-mapping.xml" />
+ 		<mapper resource="mappings/counseling-mapping.xml" />
  	</mappers>
  </configuration>

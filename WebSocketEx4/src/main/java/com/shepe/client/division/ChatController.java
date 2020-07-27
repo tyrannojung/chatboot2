@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.shepe.admin.biz.chat.BootService;
 import com.shepe.admin.biz.chat.BootVO;
+import com.shepe.admin.biz.chat.CounselingService;
+import com.shepe.admin.biz.chat.CounselingVO;
 import com.shepe.client.biz.chat.ChatEncoding;
 import com.shepe.client.biz.chat.ChatRoomVO;
 import com.shepe.client.biz.chat.ChatService;
@@ -39,12 +41,32 @@ public class ChatController {
 	@Autowired
 	private BootService bootservice;
 	
+	@Autowired
+	private CounselingService counselingservice;
+	
 	
 	
 	@RequestMapping("/admin_index")
-	public String adminIndex() {
+	public String adminIndex(HttpServletRequest request) {
+		
+		/////////////추후adminlogin action에 박을것.//////////////////////////////
+		HttpSession session = request.getSession();
+		BootVO vo = bootservice.BootContent();
+		session.setAttribute("BootContentt", vo);
+		///////////////////////////////////////////////////////////////////
+		
 		return "/admin/adminchat/admin_index";
 	}
+	
+	@RequestMapping("/counseling_history")
+	public void counseling(CounselingVO vo) {
+		System.out.println("여기타나?");
+		System.out.println(vo.getConsultsq());
+		
+		counselingservice.counselingAddAction(vo);
+	}
+	
+	
 	
 	@RequestMapping("/admin_getChatroom")
 	public String admin_testtest(@RequestParam String fromId, @RequestParam String toId, @RequestParam String chatroomnum, Model model) {
@@ -53,7 +75,8 @@ public class ChatController {
 		int chatnum = Integer.parseInt(chatroomnum);
 		
 		model.addAttribute("getChatroomList", chatService.getChatListByRecent(toId, fromId, 100, chatnum));
-		model.addAttribute("getChatroom", chatService.admin_chatroomone(fromId));
+		
+		model.addAttribute("chatroomVO", chatService.admin_chatroomone(fromId));
 
 		return "/admin/adminchat/admin_chatroom";
 	}
@@ -61,7 +84,7 @@ public class ChatController {
 	@ResponseBody
 	@RequestMapping("/admin_chatroomone")
 	public ChatRoomVO admin_chatroomone(@RequestParam String userID) {
-
+		
 		return chatService.admin_chatroomone(userID);
 	}
 	
@@ -80,13 +103,7 @@ public class ChatController {
 		return "/admin/adminchat/admin_chat_box";
 	}
 	@RequestMapping("/index")
-	public String index(HttpServletRequest request) {
-		
-		HttpSession session = request.getSession();
-		
-		BootVO vo = bootservice.BootContent();
-		
-		session.setAttribute("BootContent", vo);
+	public String index() {
 		
 		return "redirect:/";
 	}
@@ -125,6 +142,9 @@ public class ChatController {
 		check = joindao.login(vo);
 		
 		if(check == 1) {
+			BootVO bo = bootservice.BootContent();
+			
+			session.setAttribute("BootContent", bo);
 			session.setAttribute("userID", vo.getUserID());
 			return "redirect:/index";
 			

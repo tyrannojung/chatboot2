@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Counseling">
+
+	<insert id="counselingAdd">
+		<![CDATA[
+			INSERT INTO counseling_history VALUES (#{h_userid}, #{h_adminid}, #{h_subject}, #{h_content}, #{h_ok}, #{consultsq}, null)
+		]]>
+	</insert>
+
+
+	
+</mapper>
+

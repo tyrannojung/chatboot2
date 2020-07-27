@@ -69,18 +69,6 @@
 				</table>
 			</div>
 		</table>
-		<div class="template" style="display: none">
-		<form>
-			<!-- 메시지 텍스트 박스 -->
-			<input type="text" class="message"
-				onkeydown="if(event.keyCode === 13) return false;">
-			<!-- 전송 버튼 -->
-			<input value="Send" type="button" class="sendBtn">
-		</form>
-		<br />
-		<!-- 서버와 메시지를 주고 받는 콘솔 텍스트 영역 -->
-		<textarea rows="10" cols="50" class="console" disabled="disabled"></textarea>
-	</div>
 	</div>
 <script>
 var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
@@ -99,7 +87,6 @@ var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
 		// 메시지의 구조는 JSON 형태로 만들었다.
 		let node = JSON.parse(message.data);
 		// 메시지의 status는 유저의 접속 형태이다.
-		// visit은 유저가 접속했을 때 알리는 메시지다.
 		if (node.status === "AdminCall") {
 
 			var clientUserID = node.key;
@@ -167,9 +154,7 @@ var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
 					alert("오류");
 				}
 			});
-			
-			
-			
+
 		});
 		
 		function goPage(clientId, clientroomnum) {

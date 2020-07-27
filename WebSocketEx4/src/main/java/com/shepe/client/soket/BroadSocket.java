@@ -1,7 +1,6 @@
 package com.shepe.client.soket;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,11 +30,7 @@ public class BroadSocket {
 // browser에서 웹 소켓으로 접속하면 호출되는 함수
 	@OnOpen
 	public void handleOpen(Session userSession, @PathParam("userID") String userID) {
-		
 			clientMap.put(userID, userSession);
-			
-	// 운영자 Client에 유저가 접속한 것을 알린다.
-			Admin.visit(userID);
 	}
 
 // browser에서 웹 소켓을 통해 메시지가 오면 호출되는 함수
@@ -77,21 +72,5 @@ public class BroadSocket {
 			clientMap.remove(key);
 	}
 	
-	
 
-// 유저간의 접속 리스트의 키를 취득하려고 할때.
-	public static String[] getUserKeys() {
-		
-		String[] ret = new String[clientMap.size()];
-		System.out.println(clientMap.size());
-		
-		int i=0;
-		for (String value : clientMap.keySet()) {
-		    ret[i] = value;
-		    i++ ;
-		}
-		System.out.println(Arrays.toString(ret));
-// 반환할 String 배열을 선언한다.
-		return ret;
-	}
 }
