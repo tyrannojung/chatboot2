@@ -19,4 +19,9 @@ public interface ChatService {
 	
 	void updateOk(int getConsultsq);
 	
+	int chatCompleteCheck(String userID);
+	
+	void chatAllComplete(String userID);
+
+	
 }

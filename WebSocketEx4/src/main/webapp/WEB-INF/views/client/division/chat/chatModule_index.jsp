@@ -45,7 +45,7 @@
 			  </div>
             
      <div class="container">
-     <aside style="float:right; position: fixed; right: 5px; bottom: 95px; top: 280px; z-index: 1;  ">
+     <aside style="float:right; position: fixed; right: 5px; bottom: 95px; top: 80px; z-index: 1;  ">
 	    <div id ="changechat">
 	 		 
 <div id ="change">
@@ -63,14 +63,7 @@
     <main class="chats">
       <ul class="chats__list">
         <li class="chats__chat chat">
-        	<c:choose>
-				<c:when test="${complete eq '0'}">
-				    <div id="chatgo"class="chats__chat friend friend--lg" data-toggle="modal" data-target="#myModal">
-			    </c:when>
-			    <c:otherwise>
-			      	<div id="chatgo"class="chats__chat friend friend--lg" onclick="button1_click()">
-			    </c:otherwise>
-			</c:choose>
+			<div id="chatgo"class="chats__chat friend friend--lg" onclick="button1_click()">
               <div class="friend__column">
                 <i class="fas fa-headset" style="font-size:35px;color:black;"></i> 
                 <div class="friend__content" style="padding-left: 20px;">
@@ -132,41 +125,62 @@
 			  $("#chatbutton").click(function(){
 			    $("#togglechat").fadeToggle();
 			  });
-			  
-			  
-			  
+			 
 			});
 		
 		function button1_click() {
 			
 			$.ajax({
-		  	    url: "chat",
-		  	  	cache: false
-		   }).done(function (fragment) {
-		         $("#change").replaceWith(fragment);
-		    });
+				type : "POST",
+				url : "chatCompleteCheck",
+				data : {
+					userID : '${userID}'
+				}
+			}).done(function(a) {
+				alert(a);
+				
+				if(a === 1 || a === -1){
+					
+					$.ajax({
+				  	    url: "chat",
+				  	  	cache: false
+				   }).done(function (fragment) {
+				         $("#change").replaceWith(fragment);
+				    });
+					
+				} else {
+					$("#myModal").modal();
+				}
+			});
 		}
 
 		
 //////////////////////////////////////////////////
 
 		function button2_click() {
-		
+			$('#myModal').modal('hide');
 			//새로운 상담하기를 누르면 기존 해당 아이디 모든상담  다 컴플리트
 			
-			
 			$.ajax({
-		  	    url: "chat",
-		  	  	cache: false
-		   }).done(function (fragment) {
-		         $("#change").replaceWith(fragment);
+				type : "POST",
+				url : "chatAllComplete",
+				data : {
+					userID : '${userID}'
+				}
+		   }).done(function () {
+			   $.ajax({
+			  	    url: "chat",
+			  	  	cache: false
+			   }).done(function (fragment) {
+			         $("#change").replaceWith(fragment);
+			    });
 		    });
 		}
 		
 		function button3_click() {
-			
+			$('#myModal').modal('hide');
+
 			//상담이어하기
-			
 			
 			$.ajax({
 		  	    url: "chat",

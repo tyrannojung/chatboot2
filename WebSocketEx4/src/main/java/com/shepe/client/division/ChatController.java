@@ -112,6 +112,25 @@ public class ChatController {
 	
 	
 	
+	@ResponseBody
+	@RequestMapping("/chatCompleteCheck")
+	public int chatCompleteCheck(@RequestParam String userID) {
+		return chatService.chatCompleteCheck(userID);
+		
+	}
+
+	@ResponseBody
+	@RequestMapping("/chatAllComplete")
+	public void chatAllComplete(@RequestParam String userID) {
+		System.out.println("잘타나?");
+		chatService.chatAllComplete(userID);
+	}
+		
+	
+	
+	
+	
+	
 	
 	@RequestMapping("/messageBox")
 	public String messageBox() {

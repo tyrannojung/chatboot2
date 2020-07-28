@@ -88,6 +88,18 @@
 		]]>
 	</update>
 	
+	<select id="chatCompleteCheck" resultType="int">
+		<![CDATA[
+			select IFNULL(min(chatcomplete), -1) from chatroom where userid = #{userID}
+		]]>
+	</select>
+	
+	<update id="chatAllComplete">
+		<![CDATA[
+			UPDATE CHATROOM SET chatcomplete = 1 where userid = #{userID}
+		]]>
+	</update>
+	
 	
 </mapper>
 

@@ -61,5 +61,13 @@ public class ChatServiceImpl implements ChatService {
 	public void updateOk(int getConsultsq) {
 		commonChatDAO.updateOk(getConsultsq);
 	}
+	
+	public int chatCompleteCheck(String userID) {
+		return commonChatDAO.chatCompleteCheck(userID);
+	}
+	
+	public void chatAllComplete(String userID) {
+		commonChatDAO.chatAllComplete(userID);
+	}
 
 }

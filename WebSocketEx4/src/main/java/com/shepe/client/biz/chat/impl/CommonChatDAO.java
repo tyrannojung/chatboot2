@@ -145,6 +145,14 @@ public class CommonChatDAO {
 		public void updateOk(int getConsultsq) {
 			mybatis.update("CommonChatDAO.updateOk", getConsultsq);
 		}
+		
+		public int chatCompleteCheck(String userID) {
+			return mybatis.selectOne("CommonChatDAO.chatCompleteCheck", userID);
+		}
+		
+		public void chatAllComplete(String userID) {
+			mybatis.update("CommonChatDAO.chatAllComplete", userID);
+		}
 
 		
 	}
