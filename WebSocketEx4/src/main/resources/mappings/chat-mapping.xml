@@ -56,9 +56,16 @@
 		]]>
 	</insert>
 	
+	<insert id="chatRoomSettingboot">
+		<![CDATA[
+			INSERT INTO CHATROOM VALUES (#{fromID}, #{chatRoomNum}, 1, #{chatRoomSubject}, sysdate(), null, #{admincall})
+		]]>
+	</insert>
+	
+	
 	<select id="chatroomlist" resultType="chatlist">
 		<![CDATA[
-			SELECT * FROM CHATROOM WHERE USERID=#{userID};
+			SELECT * FROM CHATROOM WHERE USERID=#{userID} ORDER BY consultsq DESC;
 		]]>
 	</select>
 	
@@ -75,6 +82,11 @@
 		]]>
 	</select>
 	
+	<update id="updateOk">
+		<![CDATA[
+			UPDATE CHATROOM SET chatcomplete = 1 where Consultsq = #{getConsultsq}
+		]]>
+	</update>
 	
 	
 </mapper>

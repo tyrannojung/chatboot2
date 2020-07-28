@@ -119,7 +119,13 @@ public class CommonChatDAO {
 			map.put("chatRoomNum", chatRoomNum);
 			map.put("chatRoomSubject", chatRoomSubject);
 			map.put("admincall", admincall);
-			mybatis.update("CommonChatDAO.chatRoomSetting", map);
+			
+			if(admincall == 1) {
+				mybatis.update("CommonChatDAO.chatRoomSetting", map);
+			} else {
+				mybatis.update("CommonChatDAO.chatRoomSettingboot", map);
+			}
+			
 		}
 		
 		public List<ChatRoomVO> chatroomlist(String userID) {
@@ -133,6 +139,11 @@ public class CommonChatDAO {
 		
 		public List<ChatRoomVO> admin_chatroomList() {
 			return mybatis.selectList("CommonChatDAO.admin_chatroomList");
+		}
+		
+		
+		public void updateOk(int getConsultsq) {
+			mybatis.update("CommonChatDAO.updateOk", getConsultsq);
 		}
 
 		

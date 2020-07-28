@@ -64,7 +64,7 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 		              <c:set var="complete" value="${item.chatcomplete}"/>
 			            <c:choose>
 						    <c:when test="${complete eq '0'}">
-						        ${status.count}.<c:out value="상담진행중"/>
+						        <c:out value="진행중"/>
 						    </c:when>
 						    <c:otherwise>
 						      	<c:out value="상담완료"/>
@@ -148,7 +148,6 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 		}
 		
 		function button_chatroom(roomnum) {
-			alert(roomnum);
 			sessionStorage.removeItem("roomnum");
 	  		sessionStorage.setItem("roomnum", roomnum);
 

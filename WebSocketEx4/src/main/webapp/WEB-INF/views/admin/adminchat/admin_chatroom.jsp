@@ -134,26 +134,18 @@
   			
   			
       
-      <div class="inbox_chat">
-        <div class="chat_list active_chat">
-          <div class="chat_people">
-            <div class="chat_ib">
-              <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-              <p>Test, which is a new approach to have all solutions 
-                astrology under one roof.</p>
-            </div>
-          </div>
-        </div>
+      <div id="inbox_counseling" class="inbox_chat">
+	      
+	<c:forEach var="c_list" items="${counselingList}">
         <div class="chat_list">
           <div class="chat_people">
             <div class="chat_ib">
-              <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-              <p>Test, which is a new approach to have all solutions 
-                astrology under one roof.</p>
+              <h5>${c_list.h_subject} <span class="chat_date">${c_list.h_date}</span></h5>
+              <p>${c_list.h_content}</p>
             </div>
           </div>
         </div>
-
+	</c:forEach>
 
 
 
@@ -324,7 +316,37 @@ function submitcheck(){
             url : "counseling_history",
             type : 'POST', 
             data : formData
-        });
+        }).done(function() {
+        	
+        	 $.ajax({
+        		type : "POST",
+ 				url : "admin_counselingone",
+ 				data : {
+ 					consultnum : '${chatroomVO.consultsq}'
+ 				},
+ 				dataType: "JSON",
+     			success : function(result) {
+     		        		$('#inbox_counseling').prepend(
+     		        				'<div class="chat_list">' + 
+     		    					'<div class="chat_people">'+
+     		    	  				'<div class="chat_ib">' +
+     		    	  				'<h5>' +
+     		    	  				result.h_subject +
+     		    	  				'<span class="chat_date">' +
+     		    	  				result.h_date +
+     		    	  				'</span></h5><p>'+
+     		    	  				result.h_content +
+     		    	  				'</p></div></div></div>'
+     						);
+     			},
+     			error: function(request, status, error) {
+     				alert("오류");
+     			}
+     		});
+
+		});
+        
+      
 }
 
 

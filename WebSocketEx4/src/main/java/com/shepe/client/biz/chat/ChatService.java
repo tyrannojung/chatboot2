@@ -16,4 +16,7 @@ public interface ChatService {
 	List<ChatRoomVO> chatroomlist(String userID);
 	ChatRoomVO admin_chatroomone(String userID);
 	List<ChatRoomVO> admin_chatroomList();
+	
+	void updateOk(int getConsultsq);
+	
 }

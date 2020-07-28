@@ -99,7 +99,15 @@ var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
 				},
 				dataType: "JSON",
 				success : function(result) {
-			     			
+					
+					let chatcomplete = result.chatcomplete;
+		        	
+		        	if ( chatcomplete == '0' ) {
+		        		chatcomplete = '상담진행중';
+		        		} else {
+		        		chatcomplete = '상담완료' ;
+		        		}
+					
 			        		$('#boxTable').prepend('<tr onclick=javascript:goPage(\"'+ result.userid +'\",\"'+ result.chatroomnum +'\");' + 
 							        "style='cursor:hand'><td>" + result.consultsq + "</td>"+
 									"<td>" + result.chatsubject + "</td>"+
@@ -107,7 +115,7 @@ var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
 									result.userid +
 							        "</h5></td>"+
 									"<td>"+result.chatdate+"</td>"+
-									"<td>O/X</td>"
+									"<td>"+chatcomplete+"</td>"
 							);
 
 			      
@@ -138,6 +146,14 @@ var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
 				success : function(result) {
 			        $.each(result, function(index, value){
 			        	
+			        	let chatcomplete = value.chatcomplete;
+			        	
+			        	if ( chatcomplete == '0' ) {
+			        		chatcomplete = '상담진행중';
+			        		} else {
+			        		chatcomplete = '상담완료' ;
+			        		}
+		
 			        	$('#boxTable').append('<tr onclick=javascript:goPage(\"'+ value.userid +'\",\"'+ value.chatroomnum +'\");' + 
 								        "style='cursor:hand'><td>" + value.consultsq + "</td>"+
 										"<td>" + value.chatsubject + "</td>"+
@@ -145,7 +161,9 @@ var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
 										value.userid +
 								        "</h5></td>"+
 										"<td>"+value.chatdate+"</td>"+
-										"<td>O/X</td>"
+										"<td>"+
+										chatcomplete +
+										"</td>"
 						);
 			        	
 			        });

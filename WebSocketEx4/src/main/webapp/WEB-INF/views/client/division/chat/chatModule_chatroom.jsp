@@ -68,17 +68,18 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 					<span class="chat__timestamp">Monday, December 30, 2019</span>
 
 
-
-
-
 				</ul>
 			</main>
+			
+			
+			
+			
 			<div class="chat__write--container chat_input"
 				style="position: absolute;">
 				<input id="chatContent" type="text" class="chat__write"
 					placeholder="Send message" class="chat__write-input"
-					style="margin-bottom: 90px; position: fixed; width: 310px; top: 580px;"
-					onkeydown="return enter()" />
+					style="margin-bottom: 90px; position: fixed; width: 310px; top: 780px;"
+					onkeydown="return enter()" disabled/>
 			</div>
 		</div>
 

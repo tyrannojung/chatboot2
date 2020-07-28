@@ -57,5 +57,9 @@ public class ChatServiceImpl implements ChatService {
 	public List<ChatRoomVO> admin_chatroomList() {
 		return commonChatDAO.admin_chatroomList();
 	}
+	
+	public void updateOk(int getConsultsq) {
+		commonChatDAO.updateOk(getConsultsq);
+	}
 
 }

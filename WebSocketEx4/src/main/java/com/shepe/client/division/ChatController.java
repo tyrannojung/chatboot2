@@ -58,10 +58,15 @@ public class ChatController {
 		return "/admin/adminchat/admin_index";
 	}
 	
+	@ResponseBody 
 	@RequestMapping("/counseling_history")
 	public void counseling(CounselingVO vo) {
 		System.out.println("여기타나?");
-		System.out.println(vo.getConsultsq());
+		System.out.println(vo.getH_ok());
+		
+		if(vo.getH_ok().equals("1")) {
+			chatService.updateOk(vo.getConsultsq());
+		}
 		
 		counselingservice.counselingAddAction(vo);
 	}
@@ -70,19 +75,27 @@ public class ChatController {
 	
 	@RequestMapping("/admin_getChatroom")
 	public String admin_testtest(@RequestParam String fromId, @RequestParam String toId, @RequestParam String chatroomnum, Model model) {
-		System.out.println(fromId + "," + toId + "," + chatroomnum);
 		
 		int chatnum = Integer.parseInt(chatroomnum);
+		ChatRoomVO vo = chatService.admin_chatroomone(fromId);
+		int consultsq = vo.getConsultsq();
 		
 		model.addAttribute("getChatroomList", chatService.getChatListByRecent(toId, fromId, 100, chatnum));
-		
-		model.addAttribute("chatroomVO", chatService.admin_chatroomone(fromId));
-		
-		model.addAttribute("counselingList", counselingservice.getCounselingList());
+		model.addAttribute("chatroomVO", vo);
+		model.addAttribute("counselingList", counselingservice.getCounselingList(consultsq));
 
 		return "/admin/adminchat/admin_chatroom";
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping("/admin_counselingone")
+	public CounselingVO admin_counselingone(@RequestParam int consultnum) {
+
+		return counselingservice.admin_counselingone(consultnum);	
+	}
+	
+
 	@ResponseBody
 	@RequestMapping("/admin_chatroomone")
 	public ChatRoomVO admin_chatroomone(@RequestParam String userID) {
@@ -243,7 +256,6 @@ public class ChatController {
 		
 		if(admincall != null) {
 			
-			System.out.println("null이 아닐때");
 			chatRoomSubject = URLDecoder.decode(chatRoomSubject, "UTF-8");
 			fromID = URLDecoder.decode(fromID, "UTF-8");
 			chatService.chatRoomSetting(fromID,chatRoomNum,chatRoomSubject,1);

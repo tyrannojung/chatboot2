@@ -10,7 +10,17 @@
 		]]>
 	</insert>
 
-
+	<select id="getCounselingList" resultType="counseling">
+		<![CDATA[
+			SELECT * FROM COUNSELING_HISTORY WHERE CONSULTSQ = #{consultsq}  ORDER BY HISTORYSQ DESC
+		]]>
+	</select>
+	
+	<select id="admin_counselingone" resultType="counseling">
+		<![CDATA[
+			SELECT * FROM counseling_history WHERE consultsq = #{consultnum} AND historysq = (SELECT MAX(historysq) FROM counseling_history WHERE consultsq = #{consultnum});
+		]]>
+	</select>
 	
 </mapper>
 

@@ -1,6 +1,8 @@
 package com.shepe.admin.biz.chat.impl;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,15 @@ public class CounselingImpl implements CounselingService {
 	public void counselingAddAction(CounselingVO vo) {
 		
 		counselingdao.counselingAddAction(vo);
+	}
+	
+	public List<CounselingVO> getCounselingList(int consultsq) {
+		
+		return counselingdao.getCounselingList(consultsq);
+	}
+	
+	public CounselingVO admin_counselingone(int consultnum) {
+		return counselingdao.admin_counselingone(consultnum);
 	}
 
 }

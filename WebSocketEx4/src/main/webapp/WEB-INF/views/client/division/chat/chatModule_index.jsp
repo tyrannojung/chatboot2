@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,11 +15,37 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
   <link rel="stylesheet" href="/ex/resources/chatcss/styles.css" />
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
 </head>
 <body>
+	<div class="modal" id="myModal">
+			    <div class="modal-dialog">
+			      <div class="modal-content">
+			      
+			        <!-- Modal Header -->
+			        <div class="modal-header">
+			          <h4 class="modal-title">Alert</h4>
+			          <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        </div>
+			        
+			        <!-- Modal body -->
+			        <div class="modal-body">
+			          <br/>진행중인 상담이 있습니다. <br/><br/>
+			        </div>
+			        
+			        <!-- Modal footer -->
+			        <div class="modal-footer">
+			          <button type="submit" class="btn btn-primary" onclick="button3_click()" data-dismiss="modal">상담이어하기</button>
+					  <button type="button" class="btn btn-danger" onclick="button2_click()">새로운상담하기</button>
+			        </div>
+			        
+			      </div>
+			    </div>
+			  </div>
+            
      <div class="container">
-     <aside style="float:right; position: fixed; right: 5px; bottom: 95px; top: 80px; z-index: 1;  ">
+     <aside style="float:right; position: fixed; right: 5px; bottom: 95px; top: 280px; z-index: 1;  ">
 	    <div id ="changechat">
 	 		 
 <div id ="change">
@@ -33,7 +63,14 @@
     <main class="chats">
       <ul class="chats__list">
         <li class="chats__chat chat">
-            <div id="chatgo"class="chats__chat friend friend--lg" onclick="button1_click()">
+        	<c:choose>
+				<c:when test="${complete eq '0'}">
+				    <div id="chatgo"class="chats__chat friend friend--lg" data-toggle="modal" data-target="#myModal">
+			    </c:when>
+			    <c:otherwise>
+			      	<div id="chatgo"class="chats__chat friend friend--lg" onclick="button1_click()">
+			    </c:otherwise>
+			</c:choose>
               <div class="friend__column">
                 <i class="fas fa-headset" style="font-size:35px;color:black;"></i> 
                 <div class="friend__content" style="padding-left: 20px;">
@@ -54,6 +91,9 @@
         </li>
       </ul>
     </main>
+    
+    
+    
     <nav class="nav" style="display: inline-block; margin-top: 350px;">
       <ul class="nav__list">
         <li class="nav__list-item">
@@ -92,10 +132,13 @@
 			  $("#chatbutton").click(function(){
 			    $("#togglechat").fadeToggle();
 			  });
+			  
+			  
+			  
 			});
 		
 		function button1_click() {
-
+			
 			$.ajax({
 		  	    url: "chat",
 		  	  	cache: false
@@ -103,6 +146,39 @@
 		         $("#change").replaceWith(fragment);
 		    });
 		}
+
+		
+//////////////////////////////////////////////////
+
+		function button2_click() {
+		
+			//새로운 상담하기를 누르면 기존 해당 아이디 모든상담  다 컴플리트
+			
+			
+			$.ajax({
+		  	    url: "chat",
+		  	  	cache: false
+		   }).done(function (fragment) {
+		         $("#change").replaceWith(fragment);
+		    });
+		}
+		
+		function button3_click() {
+			
+			//상담이어하기
+			
+			
+			$.ajax({
+		  	    url: "chat",
+		  	  	cache: false
+		   }).done(function (fragment) {
+		         $("#change").replaceWith(fragment);
+		    });
+		}
+		
+		
+//////////////////////////////////////////////////		
+		
 		
 		function buttonchatList_click() {
 

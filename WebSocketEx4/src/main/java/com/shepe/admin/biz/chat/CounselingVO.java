@@ -1,6 +1,7 @@
 package com.shepe.admin.biz.chat;
 
-import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CounselingVO {
 	
@@ -57,8 +58,10 @@ public class CounselingVO {
 	public void setHistorysq(int historysq) {
 		this.historysq = historysq;
 	}
-	public Date getH_date() {
-		return h_date;
+	public String getH_date() {
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		return date.format(h_date);
 	}
 	public void setH_date(Date h_date) {
 		this.h_date = h_date;
