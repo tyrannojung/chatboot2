@@ -69,5 +69,14 @@ public class ChatServiceImpl implements ChatService {
 	public void chatAllComplete(String userID) {
 		commonChatDAO.chatAllComplete(userID);
 	}
+	
+	public int selectChatroomnum(String userID) {
+		return commonChatDAO.selectChatroomnum(userID);
+	}
+	
+	
+	public void chatBootSubmit(String fromID, String toID, String chatContent, int chatRoomNum) {
+		commonChatDAO.chatBootSubmit(fromID, toID, chatContent, chatRoomNum);
+	}
 
 }

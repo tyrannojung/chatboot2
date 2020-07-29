@@ -62,6 +62,7 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 		            <div class="friend__content">
 		              <span class="friend__name">
 		              <c:set var="complete" value="${item.chatcomplete}"/>
+			            ${item.consultsq}.
 			            <c:choose>
 						    <c:when test="${complete eq '0'}">
 						        <c:out value="진행중"/>

@@ -83,6 +83,18 @@ public class CommonChatDAO {
 			mybatis.insert("CommonChatDAO.submit", map);
 		} 
 		
+		
+		public void chatBootSubmit(String fromID, String toID, String chatContent, int chatRoomNum) {
+
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("fromID", fromID);
+			map.put("toID", toID);
+			map.put("chatContent", chatContent);
+			map.put("chatRoomNum", chatRoomNum);
+			mybatis.insert("CommonChatDAO.chatBootSubmit", map);
+		}
+		
 		public void readChat(String fromID, String toID) {
 
 			
@@ -152,6 +164,10 @@ public class CommonChatDAO {
 		
 		public void chatAllComplete(String userID) {
 			mybatis.update("CommonChatDAO.chatAllComplete", userID);
+		}
+		
+		public int selectChatroomnum(String userID) {
+			return mybatis.selectOne("CommonChatDAO.selectChatroomnum", userID);
 		}
 
 		

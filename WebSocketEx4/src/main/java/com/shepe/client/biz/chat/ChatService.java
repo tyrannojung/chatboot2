@@ -22,6 +22,8 @@ public interface ChatService {
 	int chatCompleteCheck(String userID);
 	
 	void chatAllComplete(String userID);
-
 	
+	int selectChatroomnum(String userID);
+	
+	void chatBootSubmit(String fromID, String toID, String chatContent, int chatRoomNum);
 }

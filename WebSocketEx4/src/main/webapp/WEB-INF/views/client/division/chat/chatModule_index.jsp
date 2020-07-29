@@ -45,7 +45,7 @@
 			  </div>
             
      <div class="container">
-     <aside style="float:right; position: fixed; right: 5px; bottom: 95px; top: 80px; z-index: 1;  ">
+     <aside style="float:right; position: fixed; right: 5px; bottom: 95px; top: 280px; z-index: 1;  ">
 	    <div id ="changechat">
 	 		 
 <div id ="change">
@@ -137,7 +137,6 @@
 					userID : '${userID}'
 				}
 			}).done(function(a) {
-				alert(a);
 				
 				if(a === 1 || a === -1){
 					
@@ -181,14 +180,26 @@
 			$('#myModal').modal('hide');
 
 			//상담이어하기
-			
 			$.ajax({
-		  	    url: "chat",
+			type : "POST",
+			url : "selectChatroomnum",
+			data : {
+				userID : '${userID}'
+			}
+		}).done(function(chatroomnum) {
+			sessionStorage.removeItem("roomnum");
+	  		sessionStorage.setItem("roomnum", chatroomnum);
+
+			$.ajax({
+		  	    url: "chatroomlistpage",
 		  	  	cache: false
 		   }).done(function (fragment) {
 		         $("#change").replaceWith(fragment);
 		    });
-		}
+
+		});
+
+	}
 		
 		
 //////////////////////////////////////////////////		

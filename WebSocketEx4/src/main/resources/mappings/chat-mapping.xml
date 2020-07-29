@@ -26,6 +26,12 @@
 		]]>
 	</insert>
 	
+	<insert id="chatBootSubmit">
+		<![CDATA[
+			INSERT INTO CHAT VALUES (NULL, #{fromID}, #{toID}, #{chatContent}, NOW(), 1, #{chatRoomNum})
+		]]>
+	</insert>
+	
 	<update id="readChat">
 		<![CDATA[
 			UPDATE CHAT SET chatRead = 1 WHERE (fromID = #{fromID} AND toID = #{toID})
@@ -65,7 +71,7 @@
 	
 	<select id="chatroomlist" resultType="chatlist">
 		<![CDATA[
-			SELECT * FROM CHATROOM WHERE USERID=#{userID} ORDER BY consultsq DESC;
+			SELECT * FROM CHATROOM WHERE USERID=#{userID};
 		]]>
 	</select>
 	
@@ -99,6 +105,12 @@
 			UPDATE CHATROOM SET chatcomplete = 1 where userid = #{userID}
 		]]>
 	</update>
+	
+	<select id="selectChatroomnum" resultType="int">
+		<![CDATA[
+			SELECT ifnull(max(chatroomnum),0) FROM chatroom WHERE (userid = #{userID} AND chatcomplete = 0);
+		]]>
+	</select>
 	
 	
 </mapper>

@@ -16,6 +16,8 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 
 %>
 
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -66,8 +68,6 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 				<ul id="chatList" class="chat__messages" style="padding-left: 5px;">
 					<li class="chat__timestamp">&nbsp;</li>
 					<span class="chat__timestamp">Monday, December 30, 2019</span>
-
-
 				</ul>
 			</main>
 			
@@ -78,19 +78,31 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 				style="position: absolute;">
 				<input id="chatContent" type="text" class="chat__write"
 					placeholder="Send message" class="chat__write-input"
-					style="margin-bottom: 90px; position: fixed; width: 310px; top: 580px;"
-					onkeydown="return enter()" disabled/>
+					style="margin-bottom: 90px; position: fixed; width: 310px; top: 780px;"
+					disabled
+					onkeydown="return enter()"/>
 			</div>
 		</div>
 
 
-		<script type="text/javascript">		
+		<script type="text/javascript">
 		webSocket.onmessage = function(message) {
-			
-			$(".checkone").replaceWith(); // 채팅방을 누르는것만으로도 메세지가 가게끔한다.
-			
-			
+
 			var onmessagedata = message.data;
+			
+			if(onmessagedata === "AdminConnect입니다." ) {
+				sessionStorage.removeItem("adminconnect");
+				sessionStorage.setItem("adminconnect", "connect");
+				onmessagedata = "상담원이 연결되었습니다."
+				$(".checkone").replaceWith();
+				
+			} else if (onmessagedata === "Adminlogout입니다.") {
+				sessionStorage.removeItem("adminconnect");
+				sessionStorage.setItem("adminconnect", "notConnect");
+				onmessagedata = "잠시만 기다려주시겠습니까?"
+			}
+			
+
 			var fromID = '<%=userID%>';
 	  		var toID = '<%=toID%>';
 	  		var chatRoomNum ='<%=consultNum%>';
@@ -109,7 +121,7 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 						'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
 		  				'<div class="message__content">' +
 		  				'<span class="message__bubble" style="word-break:break-all;">' +
-		  				message.data +
+		  				onmessagedata +
 		  				'</span>' +
 		  				'<span class="message__author">lady</span>'+
 		  				'</div>' +
@@ -139,7 +151,7 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
   				for(var i = 0; i < result.length; i++) {
   					if(result[i][0].value == fromID) {
   						result[i][0].value ='나';
-  						addChat(result[i][0].value, result[i][2].value, result[i][3].value);
+  						addChat(result[i][0].value, result[i][2].value, result[i][3].value, result[i][4].value);
   					} else {
   						addAdminChat(result[i][0].value, result[i][2].value, result[i][3].value);
   					}
@@ -149,8 +161,18 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
   			}
   		});
   	}
-  	function addChat(chatName, chatContent, chatTime) {
-  		$('#chatList').append('<li class="sent-message message">' + 
+	
+	
+  	function addChat(chatName, chatContent, chatTime, checkread) {
+  		
+  		let checkreadwrite = "";
+  		if(checkread == 0) {
+  			checkreadwrite = '<span class="text-warning checkone" style="margin-top: 20px;">1</span>';
+			}
+  		
+  		$('#chatList').append(
+  				'<li class="sent-message message">' +
+  				checkreadwrite +
   				'<div class="message__content">' +
   				'<span class="message__bubble" style="word-break:break-all;">' +
   				chatContent +
@@ -186,8 +208,6 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 		function sendMessage() {
 			// 텍스트 박스의 객체를 가져옴
 			let message = document.getElementById("chatContent");
-			// 콘솔에 메세지를 남긴다.
-			messageTextArea.value += "(me) => " + message.value + "\n";
 			
 			$('#chatList').append('<li class="sent-message message">' +
 					'<span id="checkdb" class="spinner-border text-muted spinner-border-sm" style="margin-top: 20px;"></span>'+
@@ -221,8 +241,13 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 					}
 				}).done(function() {
 					setTimeout(function() {
+						
 						$("#checkdb").replaceWith(changetext);
-
+						
+						if  ( "connect" === sessionStorage.getItem("adminconnect")) {
+							$(".checkone").replaceWith(); 
+						}
+					
 						webSocket.send(chatContent);
 
 					}, 500);
@@ -244,7 +269,7 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 			function chatroom_butback_click() {
 
 				$.ajax({
-			  	    url: "chatlist",
+			  	    url: "chatindex",
 			  	  	cache: false
 			   }).done(function (fragment) {
 			         $("#change").replaceWith(fragment);
@@ -255,7 +280,26 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 		<script>
 		$(document).ready(function() {
 			chatListFunction('ten');
+			
+			$.ajax({
+				type : "POST",
+				url : "chatCompleteCheck",
+				data : {
+					userID : '${userID}'
+				}
+			}).done(function(a) {
+				
+				if(!(a === 1 || a === -1)){
+					$('#chatContent').attr('disabled', false);
+				} else {
+					$('#chatContent').attr('disabled', true);
+				}
+			});
 		});
+		
+		
+		
+		
 		</script>
 
 

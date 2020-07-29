@@ -83,7 +83,7 @@ public class ChatController {
 		model.addAttribute("getChatroomList", chatService.getChatListByRecent(toId, fromId, 100, chatnum));
 		model.addAttribute("chatroomVO", vo);
 		model.addAttribute("counselingList", counselingservice.getCounselingList(consultsq));
-
+		chatService.readChat(toId, fromId); 
 		return "/admin/adminchat/admin_chatroom";
 	}
 	
@@ -125,13 +125,20 @@ public class ChatController {
 		System.out.println("잘타나?");
 		chatService.chatAllComplete(userID);
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/selectChatroomnum")
+	public int selectChatroomnum(@RequestParam String userID, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		int a = chatService.selectChatroomnum(userID);
+		if(a > 0) {
+			System.out.println(a);
+			session.setAttribute("consultRoomNum", a);
+		}
+		return a;
+	}
 		
-	
-	
-	
-	
-	
-	
 	@RequestMapping("/messageBox")
 	public String messageBox() {
 		return "/admin/adminchat/admin_chat_box";
@@ -225,17 +232,18 @@ public class ChatController {
 		String userID = (String) session.getAttribute("userID");
 		int a = chatService.chatListNum(userID);
 		session.setAttribute("consultNum", a);
+		System.out.println("여긴 몇인가!!!2222" + a);
 		return "/client/division/chat/chatModule_chat";
 	}
 	
-	
-	
+
 	
 	@RequestMapping("/chatindex")
 	public String chatindex(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		String userID= (String)session.getAttribute("userID");
+		String userID = (String)session.getAttribute("userID");
 		int a = chatService.chatListNum(userID);
+		System.out.println("여긴 몇인가!!!" + a);
 		session.setAttribute("consultRoomNum", a);
 		
 		session.removeAttribute("consultNum");
@@ -249,9 +257,10 @@ public class ChatController {
 		HttpSession session = request.getSession();
 		String userID = (String) session.getAttribute("userID");
 		int a = chatService.chatListNum(userID);
+		
 		session.setAttribute("consultRoomNum", a);
-		List<ChatRoomVO> vo = chatService.chatroomlist(userID);
-		session.setAttribute("ChatRoomList", vo);
+		System.out.println("여긴 몇인가!!!33333" + a);
+		session.setAttribute("ChatRoomList", chatService.chatroomlist(userID));
 
 		return "/client/division/chat/chatModule_chatbox";
 	}
@@ -290,15 +299,8 @@ public class ChatController {
 	@ResponseBody
 	public String chatList(@RequestParam String fromID, @RequestParam String toID, @RequestParam String listType, @RequestParam int chatroomnum)  throws IOException {
 
-		if (listType.equals("ten")) return getTen(URLDecoder.decode(fromID,"UTF-8"), URLDecoder.decode(toID, "UTF-8"), chatroomnum); //from id, to id  는 한글로 작성되어있을수도 있기때문에 디코더를 사용해야한다.
-		else {
-			try {
-				return getID(URLDecoder.decode(fromID,"UTF-8"), URLDecoder.decode(toID, "UTF-8"), listType);
-				
-			} catch (Exception e) {
-				return "";
-			}
-		}
+		return getTen(URLDecoder.decode(fromID,"UTF-8"), URLDecoder.decode(toID, "UTF-8"), chatroomnum); //from id, to id  는 한글로 작성되어있을수도 있기때문에 디코더를 사용해야한다.
+	
 	}
 	
 	@ResponseBody
@@ -312,11 +314,21 @@ public class ChatController {
 
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/chatBootSubmit",produces = "application/text; charset=utf8", method=RequestMethod.POST)
+	public void chatBootSubmit(@RequestParam String fromID, @RequestParam String toID, @RequestParam String chatContent, @RequestParam int chatRoomNum) throws IOException {
+		
+		fromID = URLDecoder.decode(fromID, "UTF-8");
+		toID = URLDecoder.decode(toID, "UTF-8");
+		chatContent = URLDecoder.decode(chatContent, "UTF-8");
+		chatService.chatBootSubmit(fromID, toID, chatContent,chatRoomNum);	
+
+	}
+	
 	@RequestMapping(value="/chatUnread",produces = "application/text; charset=utf8", method=RequestMethod.POST)
 	@ResponseBody
 	public String chatUnread(@RequestParam String userID) throws IOException {
 
-		
 		if(userID == null || userID.equals("")) {
 			return "0";
 		} else {
@@ -338,29 +350,14 @@ public class ChatController {
 			result.append("[{\"value\": \"" + chatencoding.encoding(chatList.get(i).getFromID()) + "\"},");
 			result.append("{\"value\": \"" + chatencoding.encoding(chatList.get(i).getToID()) + "\"},");
 			result.append("{\"value\": \"" + chatList.get(i).getChatContent() + "\"},");
-			result.append("{\"value\": \"" + chatencoding.encoding(chatList.get(i).getChatTime()) + "\"}]");
+			result.append("{\"value\": \"" + chatencoding.encoding(chatList.get(i).getChatTime()) + "\"},");
+			result.append("{\"value\": \"" + chatList.get(i).getChatRead() + "\"}]");
 			if(i != chatList.size() -1) result.append(",");
 		}
 		result.append("], \"last\":\"" + chatList.get(chatList.size() - 1).getChatSQ() + "\"}");
 		chatService.readChat(fromID, toID); // 반환직전에 모든 채팅을 다 읽었다고 알려준다. 
+		System.out.println(result.toString());
 		return result.toString();
 	}
-	
-	@ResponseBody
-	public String getID(String fromID, String toID, String chatSQ) {
-		StringBuffer result = new StringBuffer("");
-		result.append("{\"result\":[");
-		List<CommonChatDTO> chatList = chatService.getChatListByID(fromID, toID, chatSQ);
-		if(chatList.size() == 0) return "";
-		for(int i = 0; i <chatList.size(); i++) {
-			result.append("[{\"value\": \"" + chatencoding.encoding(chatList.get(i).getFromID()) + "\"},");
-			result.append("{\"value\": \"" + chatencoding.encoding(chatList.get(i).getToID()) + "\"},");
-			result.append("{\"value\": \"" + chatencoding.encoding(chatList.get(i).getChatContent()) + "\"},");
-			result.append("{\"value\": \"" + chatencoding.encoding(chatList.get(i).getChatTime()) + "\"}]");
-			if(i != chatList.size() -1) result.append(",");
-		}
-		result.append("], \"last\":\"" + chatList.get(chatList.size() - 1).getChatSQ() + "\"}");
-		chatService.readChat(fromID, toID); // 반환직전에 모든 채팅을 다 읽었다고 알려준다. 
-		return result.toString();
-	}
+
 }

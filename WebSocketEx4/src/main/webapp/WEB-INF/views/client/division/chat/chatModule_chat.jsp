@@ -102,7 +102,7 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 				style="position: absolute;">
 				<input id="chatContent" type="text" class="chat__write"
 					placeholder="Send message" class="chat__write-input"
-					style="margin-bottom: 90px; position: fixed; width: 310px; top: 580px;"
+					style="margin-bottom: 90px; position: fixed; width: 310px; top: 780px;"
 					onkeydown="return enter()" />
 			</div>
 		</div>
@@ -123,8 +123,6 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 		};
 		
 		webSocket.onmessage = function(message) {
-			
-//			$(".checkone").replaceWith(); // 채팅방을 누르는것만으로도 메세지가 가게끔한다.
 			
 			var onmessagedata = message.data;
 			
@@ -265,7 +263,7 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
   		
 		$.ajax({
 			type : "POST",
-			url : "chatSubmit",
+			url : "chatBootSubmit",
 			data : {
 				fromID : encodeURIComponent(toID),
 				toID : encodeURIComponent(fromID),
@@ -282,7 +280,7 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 	  				' </li>');
 			$.ajax({
 				type : "POST",
-				url : "chatSubmit",
+				url : "chatBootSubmit",
 				data : {
 					fromID : encodeURIComponent(fromID),
 					toID : encodeURIComponent(toID),
