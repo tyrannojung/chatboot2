@@ -226,7 +226,6 @@ public class ChatController {
 		} else {
 			userID = URLDecoder.decode(userID, "UTF-8");
 			return chatService.getAllUnreadChat(userID) + "";
-//			response.getWriter().write(chatDAO.getAllUnreadChat(userID) + ""); //  특정한 사용자가 현재까지 읽지않은 메세지의 개수를 클라이언트한테 출력해준다.
 		}
 	}
 	

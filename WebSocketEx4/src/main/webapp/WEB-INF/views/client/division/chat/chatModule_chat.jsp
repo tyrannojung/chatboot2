@@ -91,7 +91,7 @@
 				style="position: absolute;">
 				<input id="chatContent" type="text" class="chat__write"
 					placeholder="Send message" class="chat__write-input"
-					style="margin-bottom: 90px; position: fixed; width: 310px; top: 780px;"
+					style="margin-bottom: 90px; position: fixed; width: 310px; top: 580px;"
 					onkeydown="return enter()" />
 			</div>
 		</div>
@@ -156,10 +156,8 @@
 			});
 		};
 		
-		// 서버로 메시지를 발송하는 함수
-		// Send 버튼을 누르거나 텍스트 박스에서 엔터를 치면 실행
 		function sendMessage() {
-			// 텍스트 박스의 객체를 가져옴
+			
 			let message = document.getElementById("chatContent");
 			
 			$('#chatList').append('<li class="sent-message message">' +
@@ -180,7 +178,7 @@
 			var chatRoomNum =${consultNum} +1;
 			
 			
-			message.value = ""; // 텍스트 박스 초기화
+			message.value = "";
 			
 				var changetext = '<span class="text-warning checkone" style="margin-top: 20px;">1</span>';
 				$.ajax({
@@ -204,16 +202,14 @@
 						webSocket.send(chatContent);
 
 					}, 500);
-				}); // 실패 전송실패 버튼 만들기.
+				});
 			}
 
-			// 텍스트 박스에서 엔터를 누르면
+
 			function enter() {
-				// keyCode 13은 엔터이다.
+
 				if (event.keyCode === 13) {
-					// 서버로 메시지 전송
 					sendMessage();
-					// form에 의해 자동 submit을 막는다.
 					return false;
 				}
 				return true;

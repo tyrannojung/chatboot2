@@ -72,7 +72,7 @@
 	</div>
 <script>
 var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
-		// 운영자에서의 open, close, error는 의미가 없어서 형태만 선언
+
 		webSocket.onopen = function(message) {
 		};
 		webSocket.onclose = function(message) {
@@ -82,11 +82,11 @@ var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
 </script>
 	
 	<script>
-	// 서버로 부터 메시지가 오면
+
 	webSocket.onmessage = function(message) {
-		// 메시지의 구조는 JSON 형태로 만들었다.
+
 		let node = JSON.parse(message.data);
-		// 메시지의 status는 유저의 접속 형태이다.
+		
 		if (node.status === "AdminCall") {
 
 			var clientUserID = node.key;
@@ -127,11 +127,11 @@ var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
 
 
 			
-			// message는 유저가 메시지를 보낼 때 알려주는 메시지이다.
+
 		} else if (node.status === "message") {
-			// 여기는 메세지를 추가해주면 좋을것 같다.
+
 		} else if (node.status === "bye") {
-			// 여기는 상담 원하는 사람이 소켓 끊겼을때 쓰면 될것 같다.
+
 		}
 	};
 

@@ -67,7 +67,7 @@
 
 
 	<div class="container">
-     <aside style="float:right; position: fixed; right: 5px; bottom: 95px; top: 280px; z-index: 1;  ">
+     <aside style="float:right; position: fixed; right: 5px; bottom: 95px; top: 80px; z-index: 1;  ">
 	    <div id ="changechat">
 	 		 
 <div id ="change">
@@ -154,8 +154,39 @@
 			  $("#chatbutton").click(function(){
 			    $("#togglechat").fadeToggle();
 			  });
-			 
+			  
+			  getUnread();
+			  getInfiniteUnread();
+			  
 			});
+    	
+    	
+	  	function getUnread() {
+			$.ajax({
+				type: "POST",
+				url: "chatUnread",
+				data: {
+					userID: encodeURIComponent('${userID}'),
+				},
+				success: function(result) {
+					if(result >= 1) {
+						showUnread(result);
+					} else {
+						showUnread('');
+					}
+				}
+			});
+		}
+	  	
+	  	function showUnread(result) {
+			$('#unread').html(result);
+		}
+	  	
+		function getInfiniteUnread() {
+			setInterval(function() {
+				getUnread();
+			}, 4000);
+		}
 		
 		function button1_click() {
 			
@@ -186,7 +217,6 @@
 //////////////////////////////////////////////////
 		function button2_click() {
 			$('#myModal').modal('hide');
-			//새로운 상담하기를 누르면 기존 해당 아이디 모든상담  다 컴플리트
 			
 			$.ajax({
 				type : "POST",
@@ -240,6 +270,8 @@
 		         $("#change").replaceWith(fragment);
 		    });
 		}
+		
+
 	</script>
 
 </body>

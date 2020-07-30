@@ -76,7 +76,7 @@
 
 <script>
 var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
-		// 운영자에서의 open, close, error는 의미가 없어서 형태만 선언
+
 		webSocket.onopen = function(message) {
 		};
 		webSocket.onclose = function(message) {

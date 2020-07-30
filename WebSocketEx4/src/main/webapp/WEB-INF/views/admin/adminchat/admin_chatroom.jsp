@@ -206,7 +206,7 @@
 
 <script>
 var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
-		// 운영자에서의 open, close, error는 의미가 없어서 형태만 선언
+
 		webSocket.onopen = function(message) {
 		};
 		webSocket.onclose = function(message) {
@@ -251,7 +251,7 @@ webSocket.onmessage = function(message) {
 
 
 function sendMessage() {
-	// 텍스트 박스의 객체를 가져옴
+
 	let message = document.getElementById("chatContent");
 	let key = '${chatroomVO.userid}';
 	$('#msg_historyid').append(
@@ -265,16 +265,16 @@ function sendMessage() {
 				);
 	$('#msg_historyid').scrollTop($('#msg_historyid')[0].scrollHeight);
 		webSocket.send(key + "#####" + message.value);
-		message.value = ""; // 텍스트 박스 초기화
+		message.value = ""; 
 	}
 
 
-	// 텍스트 박스에서 엔터를 누르면
+
 	function enter() {
-		// keyCode 13은 엔터이다.
+
 		if (event.keyCode === 13) {
 			sendMessage();
-			// form에 의해 자동 submit을 막는다.
+
 			return false;
 		}
 		return true;
