@@ -20,31 +20,53 @@
 </head>
 <body>
 	<div class="modal" id="myModal">
-			    <div class="modal-dialog">
-			      <div class="modal-content">
-			      
-			        <!-- Modal Header -->
-			        <div class="modal-header">
-			          <h4 class="modal-title">Alert</h4>
-			          <button type="button" class="close" data-dismiss="modal">&times;</button>
-			        </div>
-			        
-			        <!-- Modal body -->
-			        <div class="modal-body">
-			          <br/>진행중인 상담이 있습니다. <br/><br/>
-			        </div>
-			        
-			        <!-- Modal footer -->
-			        <div class="modal-footer">
-			          <button type="submit" class="btn btn-primary" onclick="button3_click()" data-dismiss="modal">상담이어하기</button>
-					  <button type="button" class="btn btn-danger" onclick="button2_click()">새로운상담하기</button>
-			        </div>
-			        
-			      </div>
-			    </div>
-			  </div>
-            
-     <div class="container">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Alert</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<br />진행중인 상담이 있습니다. <br />
+					<br />
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary"
+						onclick="button3_click()" data-dismiss="modal">상담이어하기</button>
+					<button type="button" class="btn btn-danger"
+						onclick="button2_click()">새로운상담하기</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="noUserId">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Alert</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">로그인이 필요합니다...</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<div class="container">
      <aside style="float:right; position: fixed; right: 5px; bottom: 95px; top: 280px; z-index: 1;  ">
 	    <div id ="changechat">
 	 		 
@@ -63,7 +85,14 @@
     <main class="chats">
       <ul class="chats__list">
         <li class="chats__chat chat">
-			<div id="chatgo"class="chats__chat friend friend--lg" onclick="button1_click()">
+        	<c:choose>
+			    <c:when test="${empty userID}">
+					<div id="chatgo"class="chats__chat friend friend--lg" data-toggle="modal" data-target="#noUserId">
+			    </c:when>
+			    <c:otherwise>
+					<div id="chatgo"class="chats__chat friend friend--lg" onclick="button1_click()">
+			    </c:otherwise>
+			</c:choose>
               <div class="friend__column">
                 <i class="fas fa-headset" style="font-size:35px;color:black;"></i> 
                 <div class="friend__content" style="padding-left: 20px;">
@@ -77,7 +106,7 @@
               </div>
               <div class="friend__column">
                 <span class="chat__timestamp">
-                  December 30
+                  August 3
                 </span>
               </div>
             </div>
@@ -155,7 +184,6 @@
 
 		
 //////////////////////////////////////////////////
-
 		function button2_click() {
 			$('#myModal').modal('hide');
 			//새로운 상담하기를 누르면 기존 해당 아이디 모든상담  다 컴플리트
@@ -189,7 +217,6 @@
 		}).done(function(chatroomnum) {
 			sessionStorage.removeItem("roomnum");
 	  		sessionStorage.setItem("roomnum", chatroomnum);
-	  		alert(chatroomnum);
 
 			$.ajax({
 		  	    url: "chatroomlistpage",
@@ -202,9 +229,7 @@
 
 	}
 		
-		
 //////////////////////////////////////////////////		
-		
 		
 		function buttonchatList_click() {
 
