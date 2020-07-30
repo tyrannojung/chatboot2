@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.shepe.admin.biz.chat.BootService;
 import com.shepe.admin.biz.chat.BootVO;
-import com.shepe.admin.biz.chat.CounselingService;
-import com.shepe.admin.biz.chat.CounselingVO;
+
 import com.shepe.client.biz.chat.ChatEncoding;
 import com.shepe.client.biz.chat.ChatRoomVO;
 import com.shepe.client.biz.chat.ChatService;
@@ -41,60 +40,6 @@ public class ChatController {
 	@Autowired
 	private BootService bootservice;
 	
-	@Autowired
-	private CounselingService counselingservice;
-	
-	
-	
-	@RequestMapping("/admin_index")
-	public String adminIndex(HttpServletRequest request) {
-		
-		/////////////추후adminlogin action에 박을것.//////////////////////////////
-		HttpSession session = request.getSession();
-		BootVO vo = bootservice.BootContent();
-		session.setAttribute("BootContentt", vo);
-		///////////////////////////////////////////////////////////////////
-		
-		return "/admin/adminchat/admin_index";
-	}
-	
-	@ResponseBody 
-	@RequestMapping("/counseling_history")
-	public void counseling(CounselingVO vo) {
-		System.out.println("여기타나?");
-		System.out.println(vo.getH_ok());
-		
-		if(vo.getH_ok().equals("1")) {
-			chatService.updateOk(vo.getConsultsq());
-		}
-		
-		counselingservice.counselingAddAction(vo);
-	}
-	
-	
-	
-	@RequestMapping("/admin_getChatroom")
-	public String admin_testtest(@RequestParam String fromId, @RequestParam String toId, @RequestParam String chatroomnum, Model model) {
-		
-		int chatnum = Integer.parseInt(chatroomnum);
-		ChatRoomVO vo = chatService.admin_chatroomone(fromId);
-		int consultsq = vo.getConsultsq();
-		
-		model.addAttribute("getChatroomList", chatService.getChatListByRecent(toId, fromId, 100, chatnum));
-		model.addAttribute("chatroomVO", vo);
-		model.addAttribute("counselingList", counselingservice.getCounselingList(consultsq));
-		chatService.readChat(toId, fromId); 
-		return "/admin/adminchat/admin_chatroom";
-	}
-	
-	
-	@ResponseBody
-	@RequestMapping("/admin_counselingone")
-	public CounselingVO admin_counselingone(@RequestParam int consultnum) {
-
-		return counselingservice.admin_counselingone(consultnum);	
-	}
-	
 
 	@ResponseBody
 	@RequestMapping("/admin_chatroomone")
@@ -109,9 +54,6 @@ public class ChatController {
 		return chatService.admin_chatroomList();
 	}
 	
-	
-	
-	
 	@ResponseBody
 	@RequestMapping("/chatCompleteCheck")
 	public int chatCompleteCheck(@RequestParam String userID) {
@@ -122,7 +64,7 @@ public class ChatController {
 	@ResponseBody
 	@RequestMapping("/chatAllComplete")
 	public void chatAllComplete(@RequestParam String userID) {
-		System.out.println("잘타나?");
+		
 		chatService.chatAllComplete(userID);
 	}
 	
@@ -132,17 +74,12 @@ public class ChatController {
 	public int selectChatroomnum(@RequestParam String userID, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		int a = chatService.selectChatroomnum(userID);
-		if(a > 0) {
-			System.out.println(a);
+
 			session.setAttribute("consultRoomNum", a);
-		}
+
 		return a;
 	}
 		
-	@RequestMapping("/messageBox")
-	public String messageBox() {
-		return "/admin/adminchat/admin_chat_box";
-	}
 	@RequestMapping("/index")
 	public String index() {
 		
@@ -194,35 +131,7 @@ public class ChatController {
 			return "/client/join/login";
 		}
 	}
-	
-	@RequestMapping("/messageBoot")
-	public String messageBoot() {
-		return "/admin/adminchat/messageBoot";
-	}
-	
-	@RequestMapping("/startBoot")
-	public void startBoot(@RequestParam String startBootContent) throws IOException {
-		startBootContent = URLDecoder.decode(startBootContent, "UTF-8");
-		bootservice.startBoot(startBootContent);
-	}
-	
-	@RequestMapping("/selectCountBoot")
-	public void selectCountBoot(@RequestParam String selectNum) throws IOException {
-		selectNum = URLDecoder.decode(selectNum, "UTF-8");
-		bootservice.selectCountBoot(selectNum);
-	}
 		
-	
-	@RequestMapping(value="/qaBoot",produces = "application/text; charset=utf8", method=RequestMethod.POST)
-	public void qaBoot(@RequestParam String boot_question, @RequestParam String boot_answer, @RequestParam String boot_choice) throws IOException {
-		
-		boot_question = chatencoding.encoding(boot_question);
-		boot_answer = chatencoding.encoding(boot_answer);
-		boot_choice = chatencoding.encoding(boot_choice);
-
-		bootservice.qaBoot(boot_question, boot_answer, boot_choice);
-	}
-	
 	
 	
 	@RequestMapping("/chat")
@@ -232,22 +141,15 @@ public class ChatController {
 		String userID = (String) session.getAttribute("userID");
 		int a = chatService.chatListNum(userID);
 		session.setAttribute("consultNum", a);
-		System.out.println("여긴 몇인가!!!2222" + a);
+
 		return "/client/division/chat/chatModule_chat";
 	}
 	
 
 	
 	@RequestMapping("/chatindex")
-	public String chatindex(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		String userID = (String)session.getAttribute("userID");
-		int a = chatService.chatListNum(userID);
-		System.out.println("여긴 몇인가!!!" + a);
-		session.setAttribute("consultRoomNum", a);
-		
-		session.removeAttribute("consultNum");
-		
+	public String chatindex() {
+
 		return "/client/division/chat/chatModule_index";
 	}
 	
@@ -256,10 +158,6 @@ public class ChatController {
 		
 		HttpSession session = request.getSession();
 		String userID = (String) session.getAttribute("userID");
-		int a = chatService.chatListNum(userID);
-		
-		session.setAttribute("consultRoomNum", a);
-		System.out.println("여긴 몇인가!!!33333" + a);
 		session.setAttribute("ChatRoomList", chatService.chatroomlist(userID));
 
 		return "/client/division/chat/chatModule_chatbox";
@@ -271,12 +169,6 @@ public class ChatController {
 		return "/client/division/chat/chatModule_chatroom";
 	}
 	
-
-	@RequestMapping("/adminex")
-	public String adminex() {
-
-		return "/admin/adminchat/admin";
-	}
 	
 	@RequestMapping(value="/chatRoomSetting", produces = "application/text; charset=utf8", method=RequestMethod.POST)
 	@ResponseBody
@@ -356,8 +248,7 @@ public class ChatController {
 		}
 		result.append("], \"last\":\"" + chatList.get(chatList.size() - 1).getChatSQ() + "\"}");
 		chatService.readChat(fromID, toID); // 반환직전에 모든 채팅을 다 읽었다고 알려준다. 
-		System.out.println(result.toString());
 		return result.toString();
+		
 	}
-
 }

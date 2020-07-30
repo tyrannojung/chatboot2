@@ -189,6 +189,7 @@
 		}).done(function(chatroomnum) {
 			sessionStorage.removeItem("roomnum");
 	  		sessionStorage.setItem("roomnum", chatroomnum);
+	  		alert(chatroomnum);
 
 			$.ajax({
 		  	    url: "chatroomlistpage",

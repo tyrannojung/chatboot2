@@ -4,17 +4,6 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%
-	String userID = null;
-if (session.getAttribute("userID") != null) {
-	userID = (String) session.getAttribute("userID");
-}
-
-int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
-
-	String toID = "admin";
-
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,8 +43,8 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
         
         
         <div>
-        <c:forEach var="item" items="${ChatRoomList}"  varStatus="status"> 
-			<a href='javascript:void(0);' class="nav__list-link" onclick="button_chatroom('${status.count}')">
+        <c:forEach var="item" items="${ChatRoomList}"> 
+			<a href='javascript:void(0);' class="nav__list-link" onclick="button_chatroom('${item.chatroomnum}')">
 				<li class="friends__friend friend friend--lg">
 		          <div class="friend__column">
 		              <img src="/ex/resources/chatcss/consultbox.png" class="friend__avatar"/>
@@ -119,24 +108,6 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 </nav>
 
 <script>
-		function buttonchatList_click() {
-			
-			var fromID = '<%=userID%>';
-	  		var toID = '<%=toID%>';
-	  		var chatRoomNum ='<%=consultNum%>';
-			
-			$.ajax({
-		  	    url: "chatList",
-		  	  data : {
-					fromID : encodeURIComponent(fromID),
-					toID : encodeURIComponent(toID),
-					chatRoomNum : chatRoomNum
-				}
-		   }).done(function (fragment) {
-		         $("#change").replaceWith(fragment);
-		    });
-		}
-		
 		
 		function buttonback_click1() {
 
@@ -151,6 +122,7 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 		function button_chatroom(roomnum) {
 			sessionStorage.removeItem("roomnum");
 	  		sessionStorage.setItem("roomnum", roomnum);
+	  		alert(roomnum);
 
 			$.ajax({
 		  	    url: "chatroomlistpage",

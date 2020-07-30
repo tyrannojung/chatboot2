@@ -4,19 +4,6 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%
-	String userID = null;
-if (session.getAttribute("userID") != null) {
-	userID = (String) session.getAttribute("userID");
-}
-
-int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
-
-	String toID = "admin";
-
-%>
-
-
 
 <!DOCTYPE html>
 <html>
@@ -93,19 +80,19 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 			if(onmessagedata === "AdminConnect입니다." ) {
 				sessionStorage.removeItem("adminconnect");
 				sessionStorage.setItem("adminconnect", "connect");
-				onmessagedata = "상담원이 연결되었습니다."
 				$(".checkone").replaceWith();
+				return;
 				
 			} else if (onmessagedata === "Adminlogout입니다.") {
 				sessionStorage.removeItem("adminconnect");
 				sessionStorage.setItem("adminconnect", "notConnect");
-				onmessagedata = "잠시만 기다려주시겠습니까?"
+				return;
 			}
 			
 
-			var fromID = '<%=userID%>';
-	  		var toID = '<%=toID%>';
-	  		var chatRoomNum ='<%=consultNum%>';
+			var fromID = '${userID}';
+	  		var toID = 'admin';
+	  		var chatRoomNum = sessionStorage.getItem("roomnum");
 	  		
 			$.ajax({
 				type : "POST",
@@ -132,9 +119,14 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 		};
 	  	
 	function chatListFunction(type) {
-  		var fromID = '<%=userID %>';
-  		var toID = '<%= toID %>';
+  		var fromID = '${userID}';
+  		var toID = 'admin';
   		var chatroomnum = sessionStorage.getItem("roomnum");
+  		
+		
+		alert(chatroomnum);
+		
+  		
   		$.ajax({
   			type: "POST",
   			url: "chatList",
@@ -157,7 +149,6 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
   					}
   				}
   				lastID = Number(parsed.last);
-  				
   			}
   		});
   	}
@@ -221,12 +212,12 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 			$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
 			
 			
-			var fromID = '<%=userID%>';
-	  		var toID = '<%=toID%>';
+			var fromID = '${userID}';
+	  		var toID = 'admin';
 			var chatContent = message.value;
-			var chatRoomNum ='<%=consultNum%>';
+			var chatRoomNum = sessionStorage.getItem("roomnum");
 			
-			
+
 			message.value = ""; // 텍스트 박스 초기화
 			
 				var changetext = '<span class="text-warning checkone" style="margin-top: 20px;">1</span>';
@@ -296,10 +287,6 @@ int consultNum = (int)(session.getAttribute("consultRoomNum")) + 1;
 				}
 			});
 		});
-		
-		
-		
-		
 		</script>
 
 

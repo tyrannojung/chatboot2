@@ -71,7 +71,7 @@
 	
 	<select id="chatroomlist" resultType="chatlist">
 		<![CDATA[
-			SELECT * FROM CHATROOM WHERE USERID=#{userID};
+			SELECT * FROM CHATROOM WHERE USERID=#{userID} ORDER BY chatroomnum DESC;
 		]]>
 	</select>
 	

@@ -101,7 +101,7 @@ function submitcheck(i){
 					</li>
 
 
-					<li class="nav-item"><a class="nav-link" href="#section3">버튼수</a>
+					<li class="nav-item"><a class="nav-link" href="#section3">BootContent</a>
 					</li>
 
 				</ul>
@@ -163,7 +163,7 @@ function submitcheck(i){
 
 	<script>
 		$(document).ready(function() {
-			$('#section1').fadeIn(2000);
+			$('#section1').fadeIn(1000);
 		});
 
 		$(function() {

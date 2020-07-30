@@ -4,17 +4,6 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%
-	String userID = null;
-if (session.getAttribute("userID") != null) {
-	userID = (String) session.getAttribute("userID");
-}
-
-int consultNum = (int)(session.getAttribute("consultNum")) + 1;
-
-	String toID = "admin";
-
-%>
 
 <!DOCTYPE html>
 <html>
@@ -87,7 +76,7 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 							<c:forEach var="i" begin="0" end="${BootContent.butNum - 1}"> 
 								<c:set var="fname1" value="q${i}" />
 								<c:set var="fname2" value="a${i}" />
-								<button id="a${i}" type="button" class="btn btn-secondary mg-bt10" onclick="submitboot('${BootContent[fname2]}','${BootContent[fname1]}');">${BootContent[fname1]}</button>
+								<button id="a${i}" type="button" class="btn btn-secondary mg-bt10 buttonlock" onclick="submitboot('${BootContent[fname2]}','${BootContent[fname1]}');">${BootContent[fname1]}</button>
 							</c:forEach>
 							</span>
 							<span class="message__author">lady</span>
@@ -129,19 +118,19 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 			if(onmessagedata === "AdminConnect입니다." ) {
 				sessionStorage.removeItem("adminconnect");
 				sessionStorage.setItem("adminconnect", "connect");
-				onmessagedata = "상담원이 연결되었습니다."
 				$(".checkone").replaceWith();
+				return;
 				
 			} else if (onmessagedata === "Adminlogout입니다.") {
 				sessionStorage.removeItem("adminconnect");
 				sessionStorage.setItem("adminconnect", "notConnect");
-				onmessagedata = "잠시만 기다려주시겠습니까?"
+				return;
 			}
 			
 			
-			var fromID = '<%=userID%>';
-	  		var toID = '<%=toID%>';
-	  		var chatRoomNum ='<%=consultNum%>';
+			var fromID = '${userID}';
+	  		var toID = 'admin';
+	  		var chatRoomNum =${consultNum} +1;
 	  		
 			$.ajax({
 				type : "POST",
@@ -185,10 +174,10 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 			$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
 			
 			
-			var fromID = '<%=userID%>';
-	  		var toID = '<%=toID%>';
+			var fromID = '${userID}';
+	  		var toID = 'admin';
 			var chatContent = message.value;
-			var chatRoomNum ='<%=consultNum%>';
+			var chatRoomNum =${consultNum} +1;
 			
 			
 			message.value = ""; // 텍스트 박스 초기화
@@ -245,8 +234,6 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 				    $(this).css('visibility', 'visible'); 
 				    next(); 
 				  });
-				var consultNum = '<%=consultNum%>';
-				
 			});
 		</script>
 		<script>
@@ -254,9 +241,9 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 		
 		var onmessagedata = i;
 		var sendmessagedata = q;
-		var fromID = '<%=toID%>';
-  		var toID = '<%=userID%>';
-  		var chatRoomNum ='<%=consultNum%>';
+		var fromID = 'admin';
+  		var toID = '${userID}';
+  		var chatRoomNum =${consultNum} +1;
 		
   		sessionStorage.removeItem("sendmessagedata");
   		sessionStorage.setItem("sendmessagedata", sendmessagedata);
@@ -302,7 +289,7 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 						'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
 		  				'<div class="message__content">' +
 		  				'<span class="message__bubble" style="word-break:break-all;">' +
-		  				'<button type="button" class="btn btn-secondary" onclick="replayboot()">메뉴</button><button type="button" class="btn btn-secondary" onclick="adminchat()">상담원연결</button>'+
+		  				'<button type="button" class="btn btn-secondary buttonlock" onclick="replayboot()">메뉴</button><button type="button" class="btn btn-secondary buttonlock" onclick="adminchat()">상담원연결</button>'+
 		  				'</span>' +
 		  				'<span class="message__author">lady</span>'+
 		  				'</div>' +
@@ -320,9 +307,9 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 	}
 	
 	function adminchat(){
-		
-		var fromID = '<%=userID%>';
-  		var chatRoomNum = '<%=consultNum%>';
+		$(".buttonlock").removeAttr("onclick");
+		var fromID = '${userID}';
+  		var chatRoomNum = ${consultNum} +1;
   		var chatRoomSubject = sessionStorage.getItem("sendmessagedata");
 
 		$.ajax({
@@ -343,8 +330,8 @@ int consultNum = (int)(session.getAttribute("consultNum")) + 1;
 	
 	function buttonback_click() {
 		
-		var fromID = '<%=userID%>';
-  		var chatRoomNum = '<%=consultNum%>';
+		var fromID = '${userID}';
+  		var chatRoomNum = ${consultNum} +1;
   		var chatRoomSubject = sessionStorage.getItem("sendmessagedata");
 		
   		if (!chatRoomSubject) {
