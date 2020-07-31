@@ -57,9 +57,9 @@
 }());
 
 var url = "ws://localhost:8090/ex/broadsocket/";
-url += '<%= userID %>';
+url += '${userID}';
 
-var id = '<%= userID %>';
+var id = '${userID}';
 
 if(id != 'null') {
 	var webSocket = new WebSocket(
