@@ -122,6 +122,9 @@
 		function button_chatroom(roomnum) {
 			sessionStorage.removeItem("roomnum");
 	  		sessionStorage.setItem("roomnum", roomnum);
+	  		
+	  		let messageconnect = "ClientConnect입니다.";
+			webSocket.send(messageconnect);
 
 			$.ajax({
 		  	    url: "chatroomlistpage",

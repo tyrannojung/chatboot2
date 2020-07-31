@@ -7,7 +7,7 @@ public interface ChatService {
 	List<CommonChatDTO> getChatListByID(String fromID, String toID, String chatSQ);
 	List<CommonChatDTO> getChatListByRecent(String fromID, String toID, int number, int chatroomnum);
 	List<CommonChatDTO> getBox(String userID);
-	void submit(String fromID, String toID, String chatContent, int chatRoomNum);
+	void submit(String fromID, String toID, String chatContent, int chatRoomNum, int chatreaddata);
 	void readChat(String fromID, String toID);
 	int getAllUnreadChat(String userID);
 	int getUnreadChat(String fromID, String toID);

@@ -91,7 +91,7 @@
 				style="position: absolute;">
 				<input id="chatContent" type="text" class="chat__write"
 					placeholder="Send message" class="chat__write-input"
-					style="margin-bottom: 90px; position: fixed; width: 310px; top: 580px;"
+					style="margin-bottom: 90px; position: fixed; width: 310px; top: 780px;"
 					onkeydown="return enter()" />
 			</div>
 		</div>
@@ -126,34 +126,19 @@
 				sessionStorage.setItem("adminconnect", "notConnect");
 				return;
 			}
-			
-			
-			var fromID = '${userID}';
-	  		var toID = 'admin';
-	  		var chatRoomNum =${consultNum} +1;
 	  		
-			$.ajax({
-				type : "POST",
-				url : "chatSubmit",
-				data : {
-					fromID : encodeURIComponent(toID),
-					toID : encodeURIComponent(fromID),
-					chatContent : encodeURIComponent(onmessagedata),
-					chatRoomNum : chatRoomNum
-				}
-			}).done(function() {
-				$('#chatList').append('<li class="incoming-message message">' + 
-						'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
-		  				'<div class="message__content">' +
-		  				'<span class="message__bubble" style="word-break:break-all;">' +
-		  				onmessagedata +
-		  				'</span>' +
-		  				'<span class="message__author">lady</span>'+
-		  				'</div>' +
-		  				'<div class="media-body">' +
-		  				' </li>');
-				$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
-			});
+			$('#chatList').append('<li class="incoming-message message">' + 
+					'<img src="/ex/resources/chatcss/hello.png" class="m-avatar message__avatar" />'+
+	  				'<div class="message__content">' +
+	  				'<span class="message__bubble" style="word-break:break-all;">' +
+	  				onmessagedata +
+	  				'</span>' +
+	  				'<span class="message__author">lady</span>'+
+	  				'</div>' +
+	  				'<div class="media-body">' +
+	  				' </li>');
+			$('#togglechat').scrollTop($('#togglechat')[0].scrollHeight);
+
 		};
 		
 		function sendMessage() {
@@ -303,6 +288,10 @@
 	}
 	
 	function adminchat(){
+		
+		let messageconnect = "ClientConnect입니다.";
+		webSocket.send(messageconnect);
+		
 		$(".buttonlock").removeAttr("onclick");
 		var fromID = '${userID}';
   		var chatRoomNum = ${consultNum} +1;
@@ -325,6 +314,9 @@
 	
 	
 	function buttonback_click() {
+		
+		let clientconnectout = "ClientLogout입니다.";			
+		webSocket.send(clientconnectout);
 		
 		var fromID = '${userID}';
   		var chatRoomNum = ${consultNum} +1;

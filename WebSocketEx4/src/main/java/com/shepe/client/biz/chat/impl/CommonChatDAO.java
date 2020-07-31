@@ -72,7 +72,7 @@ public class CommonChatDAO {
 		} 
 		
 		
-		public void submit(String fromID, String toID, String chatContent, int chatRoomNum) {
+		public void submit(String fromID, String toID, String chatContent, int chatRoomNum, int chatreaddata) {
 
 			
 			HashMap<String, Object> map = new HashMap<String, Object>();
@@ -80,6 +80,7 @@ public class CommonChatDAO {
 			map.put("toID", toID);
 			map.put("chatContent", chatContent);
 			map.put("chatRoomNum", chatRoomNum);
+			map.put("chatread", chatreaddata);
 			mybatis.insert("CommonChatDAO.submit", map);
 		} 
 		

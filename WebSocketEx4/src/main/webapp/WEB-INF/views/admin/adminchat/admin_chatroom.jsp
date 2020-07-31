@@ -126,14 +126,7 @@
 			    </form>
   			</div>
   			
-  			
-  			
-  			
-  			
-  			
-  			
-  			
-      
+
       <div id="inbox_counseling" class="inbox_chat">
 	      
 	<c:forEach var="c_list" items="${counselingList}">
@@ -219,8 +212,18 @@ var webSocket = new WebSocket("ws://localhost:8090/ex/admin");
 
 webSocket.onmessage = function(message) {
 	
-	
 	let node = JSON.parse(message.data);
+	
+	if(node.message === "ClientConnect입니다." ) {
+		sessionStorage.removeItem("clientconnect");
+		sessionStorage.setItem("clientconnect", "connect");
+		return;
+		
+	} else if (node.message === "ClientLogout입니다.") {
+		sessionStorage.removeItem("clientconnect");
+		sessionStorage.setItem("clientconnect", "notConnect");
+		return;
+	}
 	
 	var fromID = 'admin';
 	var toID = node.key;
@@ -251,21 +254,47 @@ webSocket.onmessage = function(message) {
 
 
 function sendMessage() {
-
-	let message = document.getElementById("chatContent");
-	let key = '${chatroomVO.userid}';
-	$('#msg_historyid').append(
-			'<div class="outgoing_msg">' +
-			'<div class="sent_msg"><p>' +
-			message.value +
-			'</p>' +
-			'<span class="time_date">admin</span>' +
-			'</div>' +
-			'</div>'
-				);
-	$('#msg_historyid').scrollTop($('#msg_historyid')[0].scrollHeight);
-		webSocket.send(key + "#####" + message.value);
+		
+		let message = document.getElementById("chatContent");
+		var fromID = '${chatroomVO.userid}';
+		var toID = 'admin';
+		var chatContent = message.value;
+		var chatRoomNum =${chatroomVO.chatroomnum} + 0;
+		var chatread = 0;
+		
+		if("connect" === (sessionStorage.getItem("clientconnect"))){
+			chatread = 1;
+			alert(chatread);
+		}
+		
+		webSocket.send(fromID + "#####" + chatContent);
+		
+		$('#msg_historyid').append(
+				'<div class="outgoing_msg">' +
+				'<div class="sent_msg"><p>' +
+				chatContent +
+				'</p>' +
+				'<span class="time_date">admin</span>' +
+				'</div>' +
+				'</div>'
+		);
 		message.value = ""; 
+	
+	$.ajax({
+		type : "POST",
+		url : "chatSubmit",
+		data : {
+			fromID : encodeURIComponent(toID),
+			toID : encodeURIComponent(fromID),
+			chatContent : encodeURIComponent(chatContent),
+			chatRoomNum : chatRoomNum,
+			chatread : chatread
+		}
+	}).done(function() {
+		
+		$('#msg_historyid').scrollTop($('#msg_historyid')[0].scrollHeight);
+	});
+	
 	}
 
 

@@ -197,12 +197,18 @@ public class ChatController {
 	
 	@ResponseBody
 	@RequestMapping(value="/chatSubmit",produces = "application/text; charset=utf8", method=RequestMethod.POST)
-	public void chatSubmit(@RequestParam String fromID, @RequestParam String toID, @RequestParam String chatContent, @RequestParam int chatRoomNum) throws IOException {
+	public void chatSubmit(@RequestParam String fromID, @RequestParam String toID, @RequestParam String chatContent, @RequestParam int chatRoomNum, @RequestParam(value="chatread", required=false) String chatread) throws IOException {
+		
+		int chatreaddata = 0 ;
+		
+		if(chatread != null) { // 맨처음
+			chatreaddata = Integer.parseInt(chatread);
+		} 
 		
 		fromID = URLDecoder.decode(fromID, "UTF-8");
 		toID = URLDecoder.decode(toID, "UTF-8");
 		chatContent = URLDecoder.decode(chatContent, "UTF-8");
-		chatService.submit(fromID, toID, chatContent,chatRoomNum);	
+		chatService.submit(fromID, toID, chatContent,chatRoomNum, chatreaddata);	
 
 	}
 	

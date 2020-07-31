@@ -25,8 +25,8 @@ public class ChatServiceImpl implements ChatService {
 	public List<CommonChatDTO> getBox(String userID) {
 		return commonChatDAO.getBox(userID);
 	}
-	public void submit(String fromID, String toID, String chatContent, int chatRoomNum) {
-		commonChatDAO.submit(fromID, toID, chatContent, chatRoomNum);
+	public void submit(String fromID, String toID, String chatContent, int chatRoomNum, int chatreaddata) {
+		commonChatDAO.submit(fromID, toID, chatContent, chatRoomNum, chatreaddata);
 	}
 	public void readChat(String fromID, String toID) {
 		commonChatDAO.readChat(fromID, toID);

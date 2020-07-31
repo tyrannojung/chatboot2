@@ -22,7 +22,7 @@
 	
 	<insert id="submit">
 		<![CDATA[
-			INSERT INTO CHAT VALUES (NULL, #{fromID}, #{toID}, #{chatContent}, NOW(), 0, #{chatRoomNum})
+			INSERT INTO CHAT VALUES (NULL, #{fromID}, #{toID}, #{chatContent}, NOW(), #{chatread}, #{chatRoomNum})
 		]]>
 	</insert>
 	

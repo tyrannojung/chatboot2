@@ -67,7 +67,7 @@
 
 
 	<div class="container">
-     <aside style="float:right; position: fixed; right: 5px; bottom: 95px; top: 80px; z-index: 1;  ">
+     <aside style="float:right; position: fixed; right: 5px; bottom: 95px; top: 280px; z-index: 1;  ">
 	    <div id ="changechat">
 	 		 
 <div id ="change">
@@ -236,7 +236,10 @@
 		
 		function button3_click() {
 			$('#myModal').modal('hide');
-
+			
+			let messageconnect = "ClientConnect입니다.";
+			webSocket.send(messageconnect);
+			
 			//상담이어하기
 			$.ajax({
 			type : "POST",
@@ -260,7 +263,6 @@
 	}
 		
 //////////////////////////////////////////////////		
-		
 		function buttonchatList_click() {
 
 			$.ajax({
@@ -270,6 +272,12 @@
 		         $("#change").replaceWith(fragment);
 		    });
 		}
+		
+		$(window).on("beforeunload", function(){
+
+			let clientconnectout = "ClientLogout입니다.";			
+			webSocket.send(clientconnectout);
+		});
 		
 
 	</script>
